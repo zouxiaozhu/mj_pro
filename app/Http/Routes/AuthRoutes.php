@@ -13,7 +13,6 @@ class AuthRoutes
                 $api->group(['namespace' => 'Auth'], function ($api) {
                     $api->group(['prefix' => 'auth'], function ($api) {
                         $api->get('login', 'AuthController@login');                        // 用户登录的基本信息
-
                     });
                 });
             });
