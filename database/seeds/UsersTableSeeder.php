@@ -14,10 +14,10 @@ class UsersTableSeeder extends Seeder
         $user = [
             'id'    => 1,
             'name'           => 'zhanglong',
-            'password'       => password_hash('123456', PASSWORD_BCRYPT),
+            'password'       =>  password_hash('123456', PASSWORD_BCRYPT),
             'create_user_id' => '0',
         ];
 
-        
+
     }
 }

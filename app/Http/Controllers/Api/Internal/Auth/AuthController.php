@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 
 class AuthController extends Controller
 {
@@ -14,9 +15,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function login()
     {
-        echo 1;
+echo 111;die;
+        $data = [
+            'name'=>Input::get('name'),
+            'password'=>Input::get('password')
+        ];
+
     }
 
     /**
