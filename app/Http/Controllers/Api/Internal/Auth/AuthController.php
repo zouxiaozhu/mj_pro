@@ -17,9 +17,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct(AuthInterface $auth)
+    public function __construct(AuthInterface $auth,Request $request)
     {
         $this->auth = $auth;
+        $this->request=$request;
     }
 
     public function login()
@@ -38,7 +39,7 @@ class AuthController extends Controller
             return $validator->errors()->first();
         }
 
-        return $this->auth->login($fill_able);
+        return $this->auth->login($this->request->all());
     }
 
     /**
