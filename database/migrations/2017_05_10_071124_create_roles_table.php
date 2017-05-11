@@ -14,13 +14,13 @@ class CreateRolesTable extends Migration
     public function up()
     {
         Schema::create('roles',function(Blueprint $table){
-            $table->increments('id');
-            $table->char('name',10)->unsigned();
-            $table->varchar('prms')->unsigned();
-            $table->tinyInteger('super_admin')->default(0);
-            $table->varchar('description',100)->default('');
+            $table->increments('id')->comment('主键');
+            $table->char('name',10)->commemt('名字');
+            $table->string('prms')->commemt('节点');
+            $table->enum('super_admin',[0,1])->default(0);
+            $table->string('description',100)->default('');
             $table->tinyInteger('expand')->nullable();
-            $table->timestamp();
+            $table->timestamps();
 
 
         });

@@ -92,6 +92,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'password'=>[
+            'required'=>'呜呜呜呜'
+        ]
     ],
 
     /*

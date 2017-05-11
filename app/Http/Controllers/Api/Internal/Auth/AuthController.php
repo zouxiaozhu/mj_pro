@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api\Internal\Auth;
 
+use App\Repository\MjInterface\AuthInterface;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -15,14 +17,28 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(AuthInterface $auth)
+    {
+        $this->auth = $auth;
+    }
+
     public function login()
     {
-echo 111;die;
-        $data = [
-            'name'=>Input::get('name'),
-            'password'=>Input::get('password')
+        $fill_able = [
+            'name'     => 'required|max:10|min:2',
+            'password' => 'required|max:12|min:6'
         ];
+        $message   = [
+            'name.required'     => 'User_Name Required',
+            'password.required' => 'Password Required'
+        ];
+        $validator = Validator::make(Input::all(), $fill_able, $message);
 
+        if ($validator->fails()) {
+            return $validator->errors()->first();
+        }
+
+        return $this->auth->login($fill_able);
     }
 
     /**
@@ -38,7 +54,7 @@ echo 111;die;
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -49,7 +65,7 @@ echo 111;die;
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -60,7 +76,7 @@ echo 111;die;
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -71,8 +87,8 @@ echo 111;die;
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -83,7 +99,7 @@ echo 111;die;
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

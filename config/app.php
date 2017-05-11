@@ -144,8 +144,8 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Dingo\Api\Provider\LaravelServiceProvider::class
-
+        Dingo\Api\Provider\LaravelServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class
     ],
 
     /*
