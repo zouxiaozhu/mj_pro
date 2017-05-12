@@ -20,4 +20,9 @@ class RoleController extends Controller
         ];
         return $this->role->roleList($data);
     }
+
+    public function updateRole(){
+        $this->role->updateRole();
+
+    }
 }
