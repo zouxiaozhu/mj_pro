@@ -25,8 +25,9 @@ class CreateRolesTable extends Migration
 
         });
         Schema::create('user_role',function (Blueprint $table){
-            $table->integer('user_id')->index();
-            $table->integer('role_id')->index();
+            $table->integer('user_id');
+            $table->integer('role_id');
+            $table-primary(['role_id','user_id']);
         });
     }
 

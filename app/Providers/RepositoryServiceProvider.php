@@ -24,5 +24,6 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind("App\Repository\MjInterface\AuthInterface",'App\Repository\MJ\Auth\Auth');
+        $this->app->bind("App\Repository\MjInterface\RoleInterface",'App\Repository\MJ\Auth\Role');
     }
 }
