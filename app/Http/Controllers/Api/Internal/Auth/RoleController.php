@@ -14,6 +14,8 @@ class RoleController extends Controller
 
     public function roleList(Request $request)
     {
+        return  get_loaded_extensions();
+        return 111;
         $data = [
             'page_num' => $request->get('page_num') ? intval($request->get('page_num')) : 10,
             'page'     => $request->get('page_num') ? intval($request->get('page_num')) : 0
@@ -22,7 +24,6 @@ class RoleController extends Controller
     }
 
     public function updateRole(){
-        $this->role->updateRole();
-
+       return $this->role->updateRole();
     }
 }

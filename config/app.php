@@ -146,7 +146,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
-        App\Providers\ResponseServiceProvider::class
+        App\Providers\ResponseServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class
     ],
 
     /*
@@ -194,7 +195,7 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-
+        'Image'     => Intervention\Image\Facades\Image::class,
     ],
 
 ];
