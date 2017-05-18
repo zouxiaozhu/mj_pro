@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Internal\Auth;
 use App\Http\Controllers\Controller;
 use App\Repository\MjInterface\RoleInterface;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class RoleController extends Controller
 {
@@ -14,13 +15,15 @@ class RoleController extends Controller
 
     public function roleList(Request $request)
     {
-        return  get_loaded_extensions();
-        return 111;
-        $data = [
-            'page_num' => $request->get('page_num') ? intval($request->get('page_num')) : 10,
-            'page'     => $request->get('page_num') ? intval($request->get('page_num')) : 0
-        ];
-        return $this->role->roleList($data);
+       //php:Image::make(base_path('public/foo.png'))->resize(50,50)->save('new_foo.png');
+
+        // return 1111;
+
+//        $data = [
+//            'page_num' => $request->get('page_num') ? intval($request->get('page_num')) : 10,
+//            'page'     => $request->get('page_num') ? intval($request->get('page_num')) : 0
+//        ];
+//        return $this->role->roleList($data);
     }
 
     public function updateRole(){
