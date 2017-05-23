@@ -27,7 +27,7 @@ class CreateRolesTable extends Migration
         Schema::create('user_role',function (Blueprint $table){
             $table->integer('user_id');
             $table->integer('role_id');
-            $table-primary(['role_id','user_id']);
+            $table->primary(['role_id','user_id']);
         });
     }
 
@@ -38,8 +38,8 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExist('roles');
-        Schema::dropIfExist('user_role');
+        Schema::dropIfExists('roles');
+        Schema::dropIfExists('user_role');
 
     }
 }

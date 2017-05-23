@@ -27,7 +27,8 @@ class AuthController extends Controller
     {
         $fill_able = [
             'name'     => 'required|max:10|min:2',
-            'password' => 'required|max:12|min:6'
+            'password' => 'required|max:12|min:6',
+
         ];
         $message   = [
             'name.required'     => 'User_Name Required',
@@ -38,8 +39,9 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return $validator->errors()->first();
         }
+        $data =$this->request->all();
 
-        return $this->auth->login($this->request->all());
+        return $this->auth->login($data);
     }
 
     /**

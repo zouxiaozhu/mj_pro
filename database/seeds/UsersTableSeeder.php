@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
             'name'           => 'zhanglong',
             'password'       => Hash::make(123456),// password_hash('123456', PASSWORD_BCRYPT),
             'create_user_id' => '0',
+            'email'          => '1428804176@qq.com'
         ];
         if (User::count() == 0) {
             User::create($user);

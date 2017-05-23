@@ -14,7 +14,7 @@ class RoleController extends Controller
     }
 
     public function roleList(Request $request)
-    {
+    {return 1111;
        //php:Image::make(base_path('public/foo.png'))->resize(50,50)->save('new_foo.png');
 
         // return 1111;
