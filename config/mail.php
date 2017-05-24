@@ -53,8 +53,10 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
+    //   $message->from('zouxiaozhu520@126.com','zl');
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => ['address' => 'zouxiaozhu520@126.com', 'name' => 'zl'],
+
 
     /*
     |--------------------------------------------------------------------------

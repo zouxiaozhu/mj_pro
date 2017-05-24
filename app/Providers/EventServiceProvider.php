@@ -16,8 +16,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SomeEvent' => [
             'App\Listeners\EventListener',
         ],
-        'App\Events\Timeall'=>[
-            'App\Listeners\Timealls'
+        'App\Events\Mail'=>[
+            'App\Listeners\SendMail'
         ]
     ];
 

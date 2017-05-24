@@ -13,6 +13,7 @@ class AuthRoutes
                     $api->group(['prefix' => 'auth'], function ($api) {
                         $api->post('login', 'AuthController@login');                        // 用户登录的基本信息
                         $api->get('role',['middleware'=>[],'uses'=>'RoleController@roleList']);
+                        $api->get('mail',['middleware'=>[],'uses'=>'RoleController@mail']);
                     });
 
                 });

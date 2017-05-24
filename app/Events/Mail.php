@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class Timeall extends Event
+class Mail extends Event
 {
     use SerializesModels;
 
@@ -18,7 +18,7 @@ class Timeall extends Event
      */
     public function __construct(User $user)
     {
-        $this->user= $user;
+        $this->user =$user;
     }
 
     /**

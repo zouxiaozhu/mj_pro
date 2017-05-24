@@ -1,11 +1,12 @@
 <?php
 namespace App\Repository\MJ\Auth;
 
-use App\Events\Time;
-use App\Events\Timeall;
+
+use App\Events\Mail;
 use App\Repository\MjInterface\AuthInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth as OAuth;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Class Auth
@@ -24,9 +25,8 @@ class Auth implements AuthInterface
         }
         // 登录用户
         $login = OAuth::attempt(['name' => $fill_able['name'], 'password' => $fill_able['password']], $fill_able['remember']);
-        $user = User::find(1);
-        event(new Timeall($user));
-
+        $user  = User::find(1);
+       return  event(new Mail($user));
 
 
 //        if ($login) {

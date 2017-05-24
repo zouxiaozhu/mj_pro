@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Internal\Auth;
 use App\Http\Controllers\Controller;
 use App\Repository\MjInterface\RoleInterface;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 
 class RoleController extends Controller
 {
@@ -25,6 +24,7 @@ class RoleController extends Controller
 //        ];
 //        return $this->role->roleList($data);
     }
+
 
     public function updateRole(){
        return $this->role->updateRole();
