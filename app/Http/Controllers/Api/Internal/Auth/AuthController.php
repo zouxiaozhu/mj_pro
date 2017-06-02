@@ -17,13 +17,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct(AuthInterface $auth,Request $request)
+    public function __construct(AuthInterface $auth, Request $request)
     {
-        $this->auth = $auth;
-        $this->request=$request;
+        $this->auth    = $auth;
+        $this->request = $request;
+        //$this->middleware();
     }
 
-    public function login()
+    function login()
     {
         $fill_able = [
             'name'     => 'required|max:10|min:2',
@@ -39,9 +40,11 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return $validator->errors()->first();
         }
-        $data =$this->request->all();
+        $data = $this->request->all();
 
-        return $this->auth->login($data);
+        $ret = $this->auth->login($data);
+var_dump($ret->toArray());
+        return view('Admin.Index.Index',compact('ret'));
     }
 
     /**

@@ -25,6 +25,7 @@ is_type() and gettype()   diffent
 9、`replace into tbname (columns) values(values)`先插入，如果有唯一索引或者主键冲突那么更新，如果没有主键，那么直接插入   
 10、`preg_match_all()   
 11、执行顺序 select * from liv_column where id in (35,23,37);
+12、ORDER BY ini_num+single_total desc
 ###oop 
 1、注册自动加载函数 spl\_autoload\_register("类名");  
 2、trait 声明类 然后可以在类里use调用类 类俗于继承 减少代码量  

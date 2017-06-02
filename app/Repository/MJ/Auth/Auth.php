@@ -26,16 +26,8 @@ class Auth implements AuthInterface
         // 登录用户
         $login = OAuth::attempt(['name' => $fill_able['name'], 'password' => $fill_able['password']], $fill_able['remember']);
         $user  = User::find(1);
-       return  event(new Mail($user));
-
-
-//        if ($login) {
-//            $fill_able['_token'] = session('_token');
-//            return json_encode($fill_able);
-//        } else {
-//            return 'fuse';
-//        }
-
+        event(new Mail($user));
+        return $user;
     }
 
 
