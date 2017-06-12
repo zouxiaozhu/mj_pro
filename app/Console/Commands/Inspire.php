@@ -28,6 +28,9 @@ class Inspire extends Command
      */
     public function handle()
     {
-        $this->comment(PHP_EOL.Inspiring::quote().PHP_EOL);
+        $preg = '/^\d{0,1}\+[a-z]{0,}./is';
+        $matc = preg_match($preg,'0+a');
+        $this->info(11111);
+        //$this->comment(PHP_EOL.Inspiring::quote().PHP_EOL);
     }
 }

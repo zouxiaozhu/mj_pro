@@ -27,12 +27,13 @@ class Auth implements AuthInterface
         $login = OAuth::attempt(['name' => $fill_able['name'], 'password' => $fill_able['password']], $fill_able['remember']);
         $user  = User::find(1);
         event(new Mail($user));
-        return $user;
+        var_dump(session()->all());
     }
 
 
     public function logout()
     {
+        print_r(session()->all());die;
         $logout = OAuth::logout();
         if ($logout) {
             return 'success';

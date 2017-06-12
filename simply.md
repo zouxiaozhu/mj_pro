@@ -25,6 +25,7 @@ is_type() and gettype()   diffent
 9、`replace into tbname (columns) values(values)`先插入，如果有唯一索引或者主键冲突那么更新，如果没有主键，那么直接插入   
 10、`preg_match_all()   
 11、执行顺序 select * from liv_column where id in (35,23,37);
+12、```curl -v ```取出请求头 的相关信息
 ###oop 
 1、注册自动加载函数 spl\_autoload\_register("类名");  
 2、trait 声明类 然后可以在类里use调用类 类俗于继承 减少代码量  
@@ -34,6 +35,13 @@ is_type() and gettype()   diffent
 6、命名空间 后期看  
 7、$GLOBALS 存储全局变量的地方是个数 
 8、$_ENV 
+###正则
+1、```\d:数字```  
+2、*```linux下换行是\n,window下换行是\r\n```*  
+3、```\s 空白（一个字符，空格，tab均可） \S取反\s```  
+4、```/i  不区分大小写```   
+5、
+6、
 
 ##linux指令
 1、ls -ah 查看隐藏文件 		
@@ -41,7 +49,8 @@ is_type() and gettype()   diffent
 3、
 1️⃣：ctrl+v 进入列编辑模式,向下或向上移动光标,把需要注释的行的开头标记起来,然后按大写的I(shift+i),再插入注释符,比如"//",再按Esc,就会全部注释了
 批量去掉注释
-2️⃣：ctrl+v,进入列编辑模式,横向选中列的个数(如"//"注释符号,需要选中两列),然后按d, 就会删除注释符号
+2️⃣：ctrl+v,进入列编辑模式,横向选中列的个数(如"//"注释符号,需要选中两列),然后按d, 就会删除注释符号  
+4、SCP命令类似cp，区别是可以在linux之间通过ssh进行互相传递，  ``` scp [可选参数] file_source file_target ```
 
 
 ##install config
