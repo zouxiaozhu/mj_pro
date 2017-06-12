@@ -19,9 +19,10 @@ class AuthController extends Controller
      */
     public function __construct(AuthInterface $auth, Request $request)
     {
+//        $this->middleware('auth.prms:all');
         $this->auth    = $auth;
         $this->request = $request;
-        //$this->middleware();
+
     }
 
     function login()
@@ -43,7 +44,7 @@ class AuthController extends Controller
         $data = $this->request->all();
 
         $ret = $this->auth->login($data);
-var_dump($ret->toArray());
+        return $ret;
         return view('Admin.Index.Index',compact('ret'));
     }
 
@@ -111,5 +112,11 @@ var_dump($ret->toArray());
     public function destroy($id)
     {
         //
+    }
+
+    public function logout()
+    {
+        $ret =  $this->auth->logout();
+        return "";
     }
 }
