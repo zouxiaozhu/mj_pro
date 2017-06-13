@@ -19,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct(AuthInterface $auth, Request $request)
     {
-//        $this->middleware('auth.prms:all');
+        $this->middleware('auth.prms:user-operate',['except'=>'login']);
         $this->auth    = $auth;
         $this->request = $request;
 
@@ -117,6 +117,6 @@ class AuthController extends Controller
     public function logout()
     {
         $ret =  $this->auth->logout();
-        return "";
+        return $ret;
     }
 }

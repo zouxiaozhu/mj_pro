@@ -3,8 +3,6 @@
 namespace App\Jobs;
 
 use App\Http\Controllers\SendMailController;
-use App\Jobs\Job;
-use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
@@ -31,6 +29,6 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
      */
     public function handle(SendMailController $mail)
     {
-        $mail->mail();
+        //$mail->mail();
     }
 }

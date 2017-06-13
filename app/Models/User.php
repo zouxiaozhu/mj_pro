@@ -34,11 +34,14 @@ class User extends Model implements AuthenticatableContract,
     public function hasRole($role)
     {
         if (is_string($role)) {
-            return $this->role->contains('prms', 'all');
+            return $this->role->contains('prms',$role);
         }
 
         return $role->intersect($this->role)->count();
+    }
 
+    public function scopeIsAdmin(){
+        return auth()->user()->id ==1 ? 1 : 0 ;
     }
 
     public function getNameAttribute($value)

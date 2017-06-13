@@ -19,12 +19,11 @@ class AuthPrms
      * @param  \Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next,$check)
+    public function handle($request, Closure $next, $check)
     {
-//        if(!$this->auth->check($check)){
-//
-//        };
-
+        if ($ret = $this->auth->check($check) == 'false') {
+            return abort(403);
+        };
         return $next($request);
     }
 }

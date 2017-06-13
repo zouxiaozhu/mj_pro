@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('create_user_id')->nullable();
             $table->tinyInteger('locked')->default(0);
             $table->tinyInteger('reset_pwd')->default(0);
+            $table->integer('avatar');
             $table->rememberToken();
             $table->timestamps();
             $table->string('last_login_time')->nullable();

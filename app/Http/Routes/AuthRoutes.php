@@ -6,6 +6,7 @@ class AuthRoutes
 {
     public function map()
     {
+        // Auth
         $api = app('Dingo\Api\Routing\Router');
         $api->version(env('API_VERSION'), function ($api) {
             $api->group(['namespace' => 'App\Http\Controllers\Api\Internal'], function ($api) {
@@ -19,16 +20,20 @@ class AuthRoutes
                 });
             });
 
-
+            // Service
             $api = app('Dingo\Api\Routing\Router');
             $api->group(['namespace' => 'App\Http\Controllers\Api\Internal'], function ($api) {
                 $api->group(['namespace' => 'Service'], function ($api) {
                     $api->group(['prefix' => 'service'], function ($api) {
                         $api->get('excel', ['uses' => 'ServiceController@createExcel']);
                         $api->get('search', ['uses' => 'XunsearchController@splitWord']);
+                        $api->post('image', ['uses' => 'ImagesController@image']);
+                        $api->get('water', ['uses' => 'ImagesController@Water']);
                     });
                 });
             });
+
+
         });
     }
 }
