@@ -28,7 +28,7 @@ class AuthRoutes
                         $api->get('excel', ['uses' => 'ServiceController@createExcel']);
                         $api->get('search', ['uses' => 'XunsearchController@splitWord']);
                         $api->post('image', ['uses' => 'ImagesController@image']);
-                        $api->get('water', ['uses' => 'ImagesController@Water']);
+                        $api->get('water', ['uses' => 'ImagesController@addWater']);
                     });
                 });
             });

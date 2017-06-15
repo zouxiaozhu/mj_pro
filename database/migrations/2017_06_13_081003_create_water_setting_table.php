@@ -38,6 +38,7 @@ class CreateWaterSettingTable extends Migration
             $table->string('user_module')->comment('采用的模块');
             $table->integer('is_use')->comment();
             $table->string('water_path')->comment('water位置');
+            $table->integer('opacity')->comment('透明度');
             $table->timestamps();
         });
     }
