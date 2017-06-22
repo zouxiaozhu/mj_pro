@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Middleware;
-
-use App\Repository\MjInterface\AuthInterface;
+use App\Repository\Middleware\MiddlewareInterface\AuthPrmsInterface;
 use Closure;
 
 class AuthPrms
 {
-    public function __construct(AuthInterface $auth)
+    public function __construct(AuthPrmsInterface $auth)
     {
         $this->auth = $auth;
     }

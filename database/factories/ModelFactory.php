@@ -26,3 +26,10 @@ $factory->define(App\Models\Roles::class, function (Faker\Generator $faker) {
         'prms' => str_random(),
     ];
 });
+
+
+$factory->define(App\Articles::class, function (Faker\Generator $faker) {
+    return [
+        'title'=>$faker->sentence
+    ];
+});

@@ -18,8 +18,8 @@ class ImagesController extends Controller
     protected $image_type = ['jpg', 'jpeg', 'png', 'bmp'];
 
     public function image(Request $request)
-    {   //上传原图
-
+    {
+        //上传原图
         if (!$request->hasFile('file')) {
             return response()->error(1202, 'REQUIRED FILE');
         }
@@ -39,7 +39,6 @@ class ImagesController extends Controller
         return response()->success(['path' => $upload_image_path]);
     }
 
-
     public function addWater($image_path)
     {
         $water = WaterSetting::where('is_use', 1)->first();;
@@ -55,8 +54,9 @@ class ImagesController extends Controller
     }
 
 
-    public function updateWater(){
-        
+    public function updateWater()
+    {
+
     }
 
 

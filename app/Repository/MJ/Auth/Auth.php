@@ -1,16 +1,15 @@
 <?php
 namespace App\Repository\MJ\Auth;
 
-
-use App\Events\Mail;
-use App\Repository\MjInterface\AuthInterface;
 use App\Models\User;
+use App\Repository\MjInterface\AuthInterface;
 use Illuminate\Support\Facades\Auth as OAuth;
-use Illuminate\Support\Facades\Redis;
+
 
 /**
  * Class Auth
  * @package App\Repository\MJ\Auth
+ *
  */
 class Auth implements AuthInterface
 {
@@ -26,16 +25,18 @@ class Auth implements AuthInterface
         // 登录用户
         $login = OAuth::attempt(['name' => $fill_able['name'], 'password' => $fill_able['password']], $fill_able['remember']);
         $user  = User::find(1);
+
+//print_r(session()->all());
         //event(new Mail($user));
-        print_r(session()->all());
+     print_r(auth()->user()->id);
     }
 
 
     public function logout()
     {
-        return $this->check('all');
+
         //$logout = OAuth::logout();
-        if ($logout) {
+        if (11) {
             return 'success';
         } else {
             return '重试一次啊!my baby';
@@ -43,11 +44,4 @@ class Auth implements AuthInterface
 
     }
 
-    public function check($prms)
-    {
-        $user_id = auth()->user()->id;
-       // $role = User::find($user_id)->role()->select('prms')->get()->toArray();
-        $ret = User::find($user_id)->hasRole('lVk7of8IiNnLAJUE');
-        return ($ret);
-    }
 }

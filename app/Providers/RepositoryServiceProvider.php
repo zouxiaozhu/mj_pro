@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repository\Middleware\AuthPrms;
+use App\Repository\Middleware\MiddlewareInterface\AuthPrmsInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -25,5 +27,6 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind("App\Repository\MjInterface\AuthInterface",'App\Repository\MJ\Auth\Auth');
         $this->app->bind("App\Repository\MjInterface\RoleInterface",'App\Repository\MJ\Auth\Role');
+        $this->app->bind(AuthPrmsInterface::class,AuthPrms::class);
     }
 }

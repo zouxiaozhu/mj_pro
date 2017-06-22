@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,7 +20,7 @@ class AuthController extends Controller
      */
     public function __construct(AuthInterface $auth, Request $request)
     {
-        $this->middleware('auth.prms:user-operate',['except'=>'login']);
+        $this->middleware('auth.prms:all|user-operate');
         $this->auth    = $auth;
         $this->request = $request;
 
@@ -27,6 +28,7 @@ class AuthController extends Controller
 
     function login()
     {
+
         $fill_able = [
             'name'     => 'required|max:10|min:2',
             'password' => 'required|max:12|min:6',
@@ -42,7 +44,7 @@ class AuthController extends Controller
             return $validator->errors()->first();
         }
         $data = $this->request->all();
-
+        App::setlocale('zh_cn');
         $ret = $this->auth->login($data);
         return $ret;
         return view('Admin.Index.Index',compact('ret'));

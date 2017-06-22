@@ -1,4 +1,9 @@
+command+ctrl+G:批量替换
 ##PHP
+###phpunit
+setEquals() 测试是否相等  
+setCount()  自动增加count函数  
+setUp()相当于构造函数  
 ###ini
 short_open_tag开启短标签  
 is_type() and gettype()   diffent
