@@ -1,5 +1,6 @@
 command+ctrl+G:批量替换
 ##PHP
+
 ###phpunit
 setEquals() 测试是否相等  
 setCount()  自动增加count函数  
@@ -13,9 +14,9 @@ is_type() and gettype()   diffent
 3、递归函数，函数内部调用的函数  
 4、可变函数，函数名通过赋值得到 调用  
 ####数组函数
-1、array_combine($arr_key,$arr_val);生成新的array($key1=>$val1,$key2=>$val2)的新数组，类比arrya_values(),array_keys();  
-2、  
-3、  
+1、`array_combine($arr_key,$arr_val);生成新的array($key1=>$val1,$key2=>$val2)的新数组，类比arrya_values(),array_keys();  `
+2、`array_walk($array,call_back_func)` 不需要返回参数  
+3、`var_dump($argv)`数组 第一个值是脚本的名称s
 ###常见函数 
 1、`get_load_extensions()`获得`php`加载项   php -m  
 2、`is_upload_file`  和 `move_uploaded_file()`  
@@ -31,6 +32,11 @@ is_type() and gettype()   diffent
 10、`preg_match_all()   
 11、执行顺序 select * from liv_column where id in (35,23,37);
 12、```curl -v ```取出请求头 的相关信息
+13、is_a(obj,class) 判断obj是不是class的实例化
+14、
+15
+16
+17
 ###oop 
 1、注册自动加载函数 spl\_autoload\_register("类名");  
 2、trait 声明类 然后可以在类里use调用类 类俗于继承 减少代码量  
@@ -45,7 +51,7 @@ is_type() and gettype()   diffent
 2、*```linux下换行是\n,window下换行是\r\n```*  
 3、```\s 空白（一个字符，空格，tab均可） \S取反\s```  
 4、```/i  不区分大小写```   
-5、
+5、  
 6、
 
 ##linux指令
