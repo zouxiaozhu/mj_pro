@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Internal\Auth;
 
 use App\Repository\MjInterface\AuthInterface;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\App;
@@ -20,14 +20,21 @@ class AuthController extends Controller
      */
     public function __construct(AuthInterface $auth, Request $request)
     {
-        $this->middleware('auth.prms:all|user-operate');
-        $this->auth    = $auth;
-        $this->request = $request;
+//        $this->middleware('auth.prms:all|user-operate');
+//        $this->auth    = $auth;
+//        $this->request = $request;
 
     }
 
     function login()
     {
+
+       $ret =  DB::table('users')->where('id','>',0)->first()->toArray();
+        var_export($ret);die;
+
+
+
+
 
         $fill_able = [
             'name'     => 'required|max:10|min:2',

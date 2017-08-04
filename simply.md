@@ -1,3 +1,11 @@
+
+
+
+
+
+
+
+
 command+ctrl+G:批量替换
 ##PHP
 
@@ -23,7 +31,6 @@ is_type() and gettype()   diffent
 3、`yield`：    
 4、`$sql = sprintf("SELECT * FROM (SELECT * FROM chat WHERE id > '%d' ORDER BY id DESC LIMIT 100) t ORDER BY id ASC", $begin)`;  
 5、`set_time_limit(0)` ;   
-6、`basename（‘文件名’，'后缀'）`，如果1个参数直接输出，2个参数取出后缀之后的文件名  ;
 类比trim和ltrim的第二个参数 ;   
 7、`htmlentities()` 函数把字符转换为 HTML 实体; 
 `html_entity_decode()` 函数把 HTML 实体转换为字符;   
@@ -31,7 +38,6 @@ is_type() and gettype()   diffent
 9、`replace into tbname (columns) values(values)`先插入，如果有唯一索引或者主键冲突那么更新，如果没有主键，那么直接插入   
 10、`preg_match_all()   
 11、执行顺序 select * from liv_column where id in (35,23,37);
-12、```curl -v ```取出请求头 的相关信息
 13、is_a(obj,class) 判断obj是不是class的实例化
 14、
 15

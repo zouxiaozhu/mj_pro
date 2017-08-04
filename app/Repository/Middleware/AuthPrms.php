@@ -11,7 +11,7 @@ class AuthPrms implements AuthPrmsInterface
     {
         $prms = explode('|', $prms);
         $auth_id = auth()->user()->id;
-        User::find($auth_id)
+        User::find($auth_id);
 
     }
 
