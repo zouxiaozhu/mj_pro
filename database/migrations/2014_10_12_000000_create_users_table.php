@@ -24,6 +24,9 @@ class CreateUsersTable extends Migration
             $table->integer('avatar');
             $table->rememberToken();
             $table->timestamps();
+            $table->integer('access_id')->comment();
+            $table->string('access_token')->comment();
+            $table->integer('is_develop')->comment();
             $table->string('last_login_time')->nullable();
         });
     }

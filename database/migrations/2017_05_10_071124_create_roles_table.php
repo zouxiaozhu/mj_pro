@@ -13,22 +13,8 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('roles',function(Blueprint $table){
-            $table->increments('id')->comment('主键');
-            $table->char('name',10)->commemt('名字');
-            $table->string('prms')->commemt('节点');
-            $table->enum('super_admin',[0,1])->default(0);
-            $table->string('description',100)->default('');
-            $table->tinyInteger('expand')->nullable();
-            $table->timestamps();
-
-
-        });
-        Schema::create('user_role',function (Blueprint $table){
-            $table->integer('user_id');
-            $table->integer('role_id');
-            $table->primary(['role_id','user_id']);
-        });
+        $this->createRole();
+        $this->createAuth();
     }
 
     /**
@@ -41,5 +27,34 @@ class CreateRolesTable extends Migration
         Schema::dropIfExists('roles');
         Schema::dropIfExists('user_role');
 
+    }
+
+    public function createRole()
+    {
+        Schema::create('roles', function (Blueprint $table) {
+            $table->increments('id')->comment('主键');
+            $table->char('name', 10)->commemt('名字');
+            $table->string('prms')->commemt('节点');
+            $table->enum('super_admin', [0, 1])->default(0);
+            $table->string('description', 100)->default('');
+            $table->tinyInteger('expand')->nullable();
+            $table->timestamps();
+
+
+        });
+        Schema::create('user_role', function (Blueprint $table) {
+            $table->integer('user_id');
+            $table->integer('role_id');
+            $table->primary(['role_id', 'user_id']);
+        });
+    }
+
+    public function createAuth()
+    {
+        Schema::create('auths', function (Blueprint $table) {
+            $table->increments('id')->comment('主键');
+            $table->char('name', 10)->commemt('名字');
+            $table->string('prms')->comment('');
+        });
     }
 }
