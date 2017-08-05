@@ -25,23 +25,17 @@ class Auth implements AuthInterface
         // 登录用户
         $login = OAuth::attempt(['name' => $fill_able['name'], 'password' => $fill_able['password']], $fill_able['remember']);
         $user  = User::find(1);
-
-//print_r(session()->all());
+        //print_r(session()->all());
         //event(new Mail($user));
-     print_r(auth()->user()->id);
+        return User::find(auth()->user()->id);
     }
-
 
     public function logout()
     {
-
-        //$logout = OAuth::logout();
-        if (11) {
-            return 'success';
-        } else {
-            return '重试一次啊!my baby';
+        if(!auth()->user()->id){
+            return response()->error('111','NO LOGIN');
         }
-
+        $logout = OAuth::logout();
+        return response()->success('111','LOGOUT ALREADY');
     }
-
 }

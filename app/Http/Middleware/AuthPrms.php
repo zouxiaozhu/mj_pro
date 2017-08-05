@@ -20,7 +20,9 @@ class AuthPrms
      */
     public function handle($request, Closure $next, $check)
     {
-        if ($ret = $this->auth->check($check) == 'false') {
+        $check = explode('|',$check);
+        $check_params =array_except($check,0);
+        if ($ret = $this->auth->$check[0]($check_params) == 'false') {
             return abort(403);
         };
         return $next($request);
