@@ -7,26 +7,29 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
-       "dingo/api": "1.0.*@dev",
+        "dingo/api": "1.0.*@dev",
         "predis/predis": "^1.1",
         "guzzlehttp/guzzle": "^6.2",
         "zizaco/entrust": "5.2.x-dev",
         "intervention/image": "^2.3",
         "laravel/cashier": "~5.0",
-        "maatwebsite/excel": "~2.1.0"
+        "maatwebsite/excel": "~2.1.0",
+        "pusher/pusher-php-server": "~2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~4.0",
         "phpspec/phpspec": "~2.1"
+
     },
     "autoload": {
         "classmap": [
             "database"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Jcc\\Taxi\\": "packages/jcc/taxi/src/"
         }
     },
     "autoload-dev": {
@@ -52,5 +55,11 @@
     },
     "config": {
         "preferred-install": "dist"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }

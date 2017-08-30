@@ -2,34 +2,30 @@
 
 namespace App\Http\Controllers\Api\Internal\Auth;
 
-use App\Models\Role_User;
 use App\Models\Roles;
 use App\Models\User;
-use App\Repository\MJ\Auth\Role;
 use App\Repository\MjInterface\AuthInterface;
 use App\Repository\MjInterface\RoleInterface;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
+
 
 class AuthController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param AuthInterface $auth
+     * @param Request       $request
+     * @param RoleInterface $role
      */
     public function __construct(AuthInterface $auth, Request $request, RoleInterface $role)
     {
-
         //this->middleware('auth.prms:all|user-operate');
         $this->middleware('auth.prms:check|sss', ['except' => ['login', 'getLogin']]);
-        //$this->middleware('auth', ['except' => ['login', 'getLogin']]);
         $this->role = $role;
         $this->auth = $auth;
         $this->request = $request;
@@ -48,11 +44,7 @@ class AuthController extends Controller
      */
     function login()
     {
-
-       $ret =  DB::table('users')->where('id','>',0)->first()->toArray();
-        var_export($ret);die;
-
-        $fill_able = [
+        echo app('taxi')->printRunning();die;        $fill_able = [
             'name' => 'required|max:10|min:2',
             'password' => 'required|max:12|min:6',
 
@@ -69,8 +61,8 @@ class AuthController extends Controller
         $data = $this->request->all();
 
         $ret = $this->auth->login($data);
+
         return $ret;
-        return view('Admin.Index.Index', compact('ret'));
     }
 
     /**

@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\Mail'=>[
             'App\Listeners\SendMail'
+        ],
+        'App\Events\Trs'=>[
+            'App\Listeners\Trs'
         ]
     ];
 

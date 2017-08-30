@@ -24,10 +24,12 @@ class Auth implements AuthInterface
         }
         // 登录用户
         $login = OAuth::attempt(['name' => $fill_able['name'], 'password' => $fill_able['password']], $fill_able['remember']);
-        $user  = User::find(1);
-        //print_r(session()->all());
-        //event(new Mail($user));
-        return User::find(auth()->user()->id);
+        if(!$login){
+            return 111;
+        }else{
+            return 222;
+        }
+        return session()->all()  ;
     }
 
     public function logout()
