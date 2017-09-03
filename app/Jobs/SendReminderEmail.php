@@ -29,6 +29,6 @@ class SendReminderEmail extends Job implements SelfHandling, ShouldQueue
      */
     public function handle(SendMailController $mail)
     {
-        //$mail->mail();
+        $mail->mail();
     }
 }

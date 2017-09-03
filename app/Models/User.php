@@ -20,7 +20,7 @@ class User extends Model implements AuthenticatableContract,
         EntrustUserTrait::can insteadof Authorizable;
     }
     protected $table = 'users';
-    protected $fillable = [
+    protected $guarded = [
         'name', 'password', 'create_user_id'
     ];
 

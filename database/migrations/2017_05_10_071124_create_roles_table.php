@@ -15,6 +15,7 @@ class CreateRolesTable extends Migration
     {
         $this->createRole();
         $this->createAuth();
+        $this->createRoleAuth();
     }
 
     /**
@@ -26,6 +27,8 @@ class CreateRolesTable extends Migration
     {
         Schema::dropIfExists('roles');
         Schema::dropIfExists('user_role');
+        Schema::dropIfExists('role_auth');
+
 
     }
 
@@ -54,7 +57,16 @@ class CreateRolesTable extends Migration
         Schema::create('auths', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
             $table->char('name', 10)->commemt('名字');
-            $table->string('prms')->comment('');
+            $table->string('prm')->comment('');
+        });
+    }
+
+    public function createRoleAuth()
+    {
+        Schema::create('role_auth', function (Blueprint $table) {
+            $table->increments('id')->comment('主键');
+            $table->integer('role_id')->commemt('名字');
+            $table->string('auth_id')->comment('');
         });
     }
 }

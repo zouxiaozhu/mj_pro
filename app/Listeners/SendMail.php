@@ -29,6 +29,9 @@ class SendMail
     {
 //         $user  = $event->user->toArray();
 //         $this->dispatch(new SendReminderEmail($user));
+         $user  = $event->user->toArray();
+         $this->dispatch(new SendReminderEmail($user))->onQueue('email');
+
 
     }
 }

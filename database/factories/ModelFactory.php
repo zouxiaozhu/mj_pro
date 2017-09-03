@@ -33,3 +33,11 @@ $factory->define(App\Articles::class, function (Faker\Generator $faker) {
         'title'=>$faker->sentence
     ];
 });
+
+$factory->define(\App\Models\Member\Member::class, function (Faker\Generator $faker) {
+    return [
+        'name'=>$faker->name,
+        'password'=>$faker->password(),
+        'email'=>$faker->email
+    ];
+});

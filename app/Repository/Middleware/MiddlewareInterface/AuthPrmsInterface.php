@@ -3,5 +3,5 @@
 namespace App\Repository\Middleware\MiddlewareInterface;
 
 interface AuthPrmsInterface{
-        public function check($prms);
+        public function verifyPrms($prms);
 }

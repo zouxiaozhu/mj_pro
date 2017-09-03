@@ -149,7 +149,10 @@ return [
         App\Providers\ResponseServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Cashier\CashierServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,  Jcc\Taxi\TaxiServiceProvider::Class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        App\Post\Providers\PostServiceProvider::class,
+
     ],
 
     /*
@@ -199,7 +202,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Image'     => Intervention\Image\Facades\Image::class,
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
+        'taxi'=>Zhanglong\Wcc\Taxi::class
+
 
     ],
-
 ];

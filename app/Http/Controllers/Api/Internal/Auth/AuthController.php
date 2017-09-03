@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Internal\Auth;
 
+use App\Http\Controllers\Api\Internal\CommonTrait;
 use App\Models\Roles;
 use App\Models\User;
 use App\Repository\MjInterface\AuthInterface;
@@ -10,11 +11,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Auth as OAuth;
+use Zhanglong\Wcc\Taxi;
 
 class AuthController extends Controller
 {
+    use CommonTrait;
     /**
      * Display a listing of the resource.
      *
@@ -26,50 +30,55 @@ class AuthController extends Controller
     {
         //this->middleware('auth.prms:all|user-operate');
         $this->middleware('auth.prms:check|sss', ['except' => ['login', 'getLogin']]);
+    }
+    public function __construt(AuthInterface $auth, Request $request, RoleInterface $role)
+    {
+        $this->middleware('auth.prms:all|user-manage',['only'=>['create','update','destory']]);
         $this->role = $role;
         $this->auth = $auth;
-        $this->request = $request;
-    }
-
-
-    public function getLogin()
-    {
-        return view('Admin.Index.Login');
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     *
-     *
+     * 登录
      */
-    function login()
+    public function login(Request $request)
     {
-        echo app('taxi')->printRunning();die;        $fill_able = [
+echo Taxi::printRunning();die;
+        $fill_able = [
             'name' => 'required|max:10|min:2',
             'password' => 'required|max:12|min:6',
-
         ];
         $message = [
             'name.required' => 'User_Name Required',
             'password.required' => 'Password Required'
         ];
+
+        $remember = $request->has('remember') ? intval($request->has('remember')) : 0;
         $validator = Validator::make(Input::all(), $fill_able, $message);
 
         if ($validator->fails()) {
             return $validator->errors()->first();
         }
-        $data = $this->request->all();
+        $data = $request->all();
+        if (!User::where('name', $data['name'])->where('locked', 1)->orwhere('reset_pwd',0)->count()) {
+            return Response::error(200,'Locked OR Must Reset');
+        }
+
+        // 登录用户
+        $login = OAuth::attempt(['name' => trim($data['name']), 'password' => $data['password']],$remember);
+        if($login){
+            $user_id =  auth()->user()->id;
+            auth()->user()->update(['last_login_time'=>time()]);
+            $this->initPrms($user_id);
+            return $user = User::select('name','email','id','last_login_time')->find($user_id);
+        }
 
         $ret = $this->auth->login($data);
+        return Response::error(1010,'Login Failed,Please Try Again');
+        event(new Mail($user));
 
-        return $ret;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         $role_id = $request->get('role_id') ?: 3;
@@ -81,46 +90,7 @@ class AuthController extends Controller
         return response()->success($ret);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
         $user_id = $request->get('user_id');
@@ -135,12 +105,6 @@ class AuthController extends Controller
         return response()->success($ret);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $ret = User::destroy(explode(',', $id));
@@ -149,7 +113,22 @@ class AuthController extends Controller
 
     public function logout()
     {
-        $ret = $this->auth->logout();
-        return $ret;
+        if(!auth()->user()->id){
+            return response()->error(1723,'Already Logout');
+        }
+        OAuth::logout();
+        if(OAuth::check()){
+            return response()->error(1723,'Logout Failed');
+        }
+        return response()->success('success');
+    }
+
+    public function initPrms($id)
+    {
+        $role = auth()->user()->role->toArray();
+        $prms = $this->arrayFilter(array_column($role,'prms'));
+        $role_ids = $this->arrayFilter(array_column($role,'id'));
+        $prms_info = array_column(Roles::getPrms($role_ids)->get()->toArray(),'prm');
+        session(['prms_info'=>$this->arrayFilter($prms_info)]);
     }
 }

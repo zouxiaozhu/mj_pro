@@ -64,4 +64,18 @@ return [
         'expire' => 60,
     ],
 
+
+
+    'guards' => [
+        'members' => [
+            'driver' => 'session',
+            'provider' => 'members',
+        ],
+    ],
+    'providers' => [
+        'members' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Member\Member::class
+        ]
+    ]
 ];

@@ -6,12 +6,13 @@ class AuthRoutes
 {
     public function map()
     {
-        // login
+        // 获取登录页面
         $api = app('Dingo\Api\Routing\Router');
         $api->version(env('API_VERSION'), function ($api) {
             $api->group(['namespace' => 'App\Http\Controllers\Api\Internal'], function ($api) {
                 $api->group(['namespace' => 'Auth'], function ($api) {
                     $api->get('in', 'AuthController@getLogin');
+
                 });
             });
         });

@@ -11,37 +11,38 @@ class AuthPrms implements AuthPrmsInterface
 {
     public function __construct()
     {
-        $prms=0;
-        $prms = explode('|', $prms);
-        $auth_id = auth()->user()->id;
-        User::find($auth_id);
-
-        if (!auth()->user()->id) {
-            return 'false';
+        if(!OAuth::check()){
+            return false;
         }
+        return true;
     }
 
-    public function check($prms = '')
+    public function verifyPrms($prms = '')
     {
-        if(!OAuth::check()){
-            return 'false';
+        $prms_info = session()->get('prms_info');
+        $prms = explode('|',$prms);
+
+        if(in_array('all',$prms_info)){
+            return true;
         }
-        $user_id = auth()->user()->id;
-        if ($user_id == SUPER_ADMIN || $user_id == ADMIN) {
-            return 'true';
+
+        $arr_prms = array_intersect($prms,$prms_info);
+        if($arr_prms){
+            return true;
         }
-        if (User::find($user_id)->role->contains('prms', 'all')) {
-            return 'true';
-        };
-        $roles = User::find($user_id)->role->toArray();
-        $arr = [];
-        foreach ($roles as $role) {
-            $arr = array_merge(explode(',', $role['prms']), $arr);
-        }
-        $role_prms = array_unique($arr);
-        if (array_intersect($prms, $role_prms) != $prms) {
-            return 'false';
-        }
-        return 'true';
+        return false;
+
+//        if (User::find($user_id)->role->contains('prms', 'all')) {
+//            return 'true';
+//        };
+//        $roles = User::find($user_id)->role->toArray();
+//        $arr = [];
+//        foreach ($roles as $role) {
+//            $arr = array_merge(explode(',', $role['prms']), $arr);
+//        }
+//        $role_prms = array_unique($arr);
+//        if (array_intersect($prms, $role_prms) != $prms) {
+//            return 'false';
+//        }
     }
 }
