@@ -30,7 +30,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
-
+            "Zouxiaozhu\\Zmedia\\":"zmedia/src/",
             "Jcc\\Taxi\\": "packages/jcc/taxi/src/"
         },
         "files":[

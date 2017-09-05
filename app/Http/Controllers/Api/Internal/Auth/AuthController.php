@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth as OAuth;
 use Zhanglong\Wcc\Taxi;
+use Zouxiaozhu\Zmedia\MediaService;
 
 class AuthController extends Controller
 {
@@ -43,7 +44,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-echo Taxi::printRunning();die;
+echo app()->make(MediaService::class)->get();die;
         $fill_able = [
             'name' => 'required|max:10|min:2',
             'password' => 'required|max:12|min:6',
