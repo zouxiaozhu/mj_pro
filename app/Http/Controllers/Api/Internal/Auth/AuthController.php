@@ -7,6 +7,9 @@ use App\Models\Roles;
 use App\Models\User;
 use App\Repository\MjInterface\AuthInterface;
 use App\Repository\MjInterface\RoleInterface;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
+use FFMpeg\Format\Video\X264;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,8 +17,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth as OAuth;
-use Zhanglong\Wcc\Taxi;
-use Zouxiaozhu\Zmedia\MediaService;
+use Zfile\ZMedia;
+use Zfile\ZMediaServiceProvider;
 
 class AuthController extends Controller
 {
@@ -44,7 +47,10 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-echo app()->make(MediaService::class)->get();die;
+       echo ZMedia::get(1);die;
+       var_dump(exec('whoami',$res));
+//        $r = popen('which ffmpeg','r');
+        var_dump($res);die;
         $fill_able = [
             'name' => 'required|max:10|min:2',
             'password' => 'required|max:12|min:6',
@@ -61,7 +67,7 @@ echo app()->make(MediaService::class)->get();die;
             return $validator->errors()->first();
         }
         $data = $request->all();
-        if (!User::where('name', $data['name'])->where('locked', 1)->orwhere('reset_pwd',0)->count()) {
+        if (!User::where('name', $data['name'])->count()) {
             return Response::error(200,'Locked OR Must Reset');
         }
 

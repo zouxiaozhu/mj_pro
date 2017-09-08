@@ -1,14 +1,11 @@
 <?php
-
-namespace Zouxiaozhu\Media;
-
+namespace Zfile;
 use Illuminate\Support\Facades\Facade;
 
-class Media extends Facade {
-
+class ZMedia extends Facade{
     public static function getFacadeAccessor()
     {
-        return 'media';
+       return 'zmedia';
     }
-
+    
 }

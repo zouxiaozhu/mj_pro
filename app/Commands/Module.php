@@ -7,8 +7,6 @@ use Illuminate\Contracts\Bus\SelfHandling;
 
 class Module extends Command implements SelfHandling
 {
-
-
     /**
      * The name and signature of the console command.
      *
@@ -50,6 +48,7 @@ class Module extends Command implements SelfHandling
             $this->line('关闭创建新模块');
         }
         $app_path = app_path();
+        
         exec(" cd $app_path && mkdir $module_name && cd {$module_name} && mkdir Console Events Exceptions Jobs Listeners Models Controllers Presenters Providers Repositories Transformers Validators && touch {$module_name}.php");
         $this->info('创建新模块'.$module_name.'完成');
     }
