@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\Member\Repositories;
 
 use GuzzleHttp\Client;
-use MXUAPI\Members\Models\MemberSMSLog;
-use MXUAPI\Members\Models\MemberSMSVerify;
-use MXUAPI\Members\Repositories\Interfaces\MemberSMSInterface;
+use App\Http\Controllers\Api\Member\Models\MemberSMSLog;
+use App\Http\Controllers\Api\Member\Models\MemberSMSVerify;
+use App\Http\Controllers\Api\Member\Repositories\Interfaces\MemberSMSInterface;
 use MXUAPI\Members\Models\MemberSMS as SMS;
 
 class MemberSMS implements MemberSMSInterface
@@ -72,8 +72,8 @@ class MemberSMS implements MemberSMSInterface
 
     public function checkVerifyCode($member_name, $code)
     {
-        $verify = MemberSMSVerify::where(['member_name' => $member_name, 'verify_code' => $code])->first();
-
+        $verify = MemberSMSVerify::where(['member_name' => $member_name, 'verify_code' => $code])->toSql();
+var_export($verify);die;
         return $verify ? true : false;
     }
 

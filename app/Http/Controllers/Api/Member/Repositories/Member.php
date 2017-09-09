@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\Member\Repositories;
 
-use MXUAPI\Members\Models\MemberBind;
-use MXUAPI\Members\Models\MemberInfo;
-use MXUAPI\Members\Models\MemberPlatform;
-use MXUAPI\Members\Models\MemberSession;
-use MXUAPI\Members\Models\MemberSetting;
-use MXUAPI\Members\Models\MemberTrace;
+use App\Http\Controllers\Api\Member\Models\MemberBind;
+use App\Http\Controllers\Api\Member\Models\MemberInfo;
+use App\Http\Controllers\Api\Member\Models\MemberPlatform;
+use App\Http\Controllers\Api\Member\Models\MemberSession;
+use App\Http\Controllers\Api\Member\Models\MemberSetting;
+use App\Http\Controllers\Api\Member\Models\MemberTrace;
 use App\Http\Controllers\Api\Member\Repositories\Interfaces\MemberInterface;
 use App\Http\Controllers\Api\Member\Models\Member as MemberModel;
 

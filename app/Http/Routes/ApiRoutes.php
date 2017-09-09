@@ -10,7 +10,7 @@ class ApiRoutes
         $api->version(env('API_VERSION'), function ($api) {
             $api->group(['namespace' => 'App\Http\Controllers\Api\Member\Controllers'], function ($api) {
                 $api->group(['prefix'=>'member'],function ($api) {
-                    $api->get('in','MemberController@login');
+                    $api->post('member-login','MemberController@login');
                     $api->get('register','MemberController@register');
                 });
             });
