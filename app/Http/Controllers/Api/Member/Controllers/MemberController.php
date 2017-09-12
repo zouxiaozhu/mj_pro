@@ -180,6 +180,8 @@ class MemberController extends Controller{
             if (!$credentials['password'] = trim($request->get('password'))) {
                 return response()->error(10004, 'Password Required');
             }
+    
+           
             if (verify_mobile($member_name)) {
                 // 验证是否允许手机登录
                 $settings = $this->setting->getSetting(self::MOBILE);
