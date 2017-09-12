@@ -1,6 +1,6 @@
 <?php
 
-namespace MXUAPI\Members\Models;
+namespace App\Http\Controllers\Api\Member\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

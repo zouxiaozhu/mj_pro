@@ -7,9 +7,6 @@ use App\Models\Roles;
 use App\Models\User;
 use App\Repository\MjInterface\AuthInterface;
 use App\Repository\MjInterface\RoleInterface;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\FFMpeg;
-use FFMpeg\Format\Video\X264;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,8 +14,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth as OAuth;
-use Zfile\ZMedia;
-use Zfile\ZMediaServiceProvider;
+
 
 class AuthController extends Controller
 {
@@ -47,7 +43,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-       echo ZMedia::get(1);die;
+
        var_dump(exec('whoami',$res));
 //        $r = popen('which ffmpeg','r');
         var_dump($res);die;

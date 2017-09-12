@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Api\Member\Event\CreditsEvent;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -21,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\Trs'=>[
             'App\Listeners\Trs'
-        ]
+        ],
     ];
 
     /**
@@ -32,6 +33,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(DispatcherContract $events)
     {
+        app('events')->listen('addCredit', CreditsEvent::class);
+      //  app('events')->listen('addTrace',);
         parent::boot($events);
 
         //

@@ -40,5 +40,6 @@ class RepositoryServiceProvider extends ServiceProvider
         app()->bind(MemberInterface::class,Member::class);
         app()->bind(MemberSettingInterface::class,MemberSetting::class);
         app()->bind(MemberSMSInterface::class,MemberSMS::class);
+
     }
 }

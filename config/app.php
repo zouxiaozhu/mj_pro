@@ -152,7 +152,8 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Post\Providers\PostServiceProvider::class,
-        Zfile\ZMediaServiceProvider::class
+     //  \Zfile\ZMediaServiceProvider::class
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
     ],
     
     /*
@@ -202,8 +203,9 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Image'     => Intervention\Image\Facades\Image::class,
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
-        'zmedia'    => Zfile\ZMediaService::class
-    
-    
+     //   'zmedia'    => Zfile\ZMediaService::class
+
+        'JWTAuth'    => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class
     ],
 ];
