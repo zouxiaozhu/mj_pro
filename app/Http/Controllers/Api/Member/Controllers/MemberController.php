@@ -145,34 +145,66 @@ class MemberController extends Controller{
             }
         }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     }
     
-    
-    
+    /**
+     * @param Request $request
+     *
+     * @return mixed
+     */
     public function login(Request $request){
         $type        = trim($request->get('type'));
         $platform_id = trim($request->get('platform_id'));
-        if($type && $platform_id){
+       
+        if ($type && $platform_id) {
+            // 第三方登录
+            // 微信等绑定是否存在
+            if (!$this->member->checkBind($platform_id, $type)) {
+                // 不存在去注册 (返回member_id)
+                $bind_id = $this->register($request);
+            } else {
+                $bind    = $this->member->getBindInfoByPlatform($platform_id, $type);
+                $bind_id = $bind->member_id;
+            }
+            // 登录
+            if (!$member = $this->member->getMemberById($bind_id)) {
+                return response()->error(10002, 'Member Info Not Found');
+            }
+            $member_name = $member->member_name;
+            $token       = JWTAuth::fromUser($member);
+        } else {
+            // 其他登录
+            if (!$member_name = trim($request->get('member_name'))) {
+                return response()->error(10001, 'Member Name Required');
+            }
+            if (!$credentials['password'] = trim($request->get('password'))) {
+                return response()->error(10004, 'Password Required');
+            }
+            if (verify_mobile($member_name)) {
+                // 验证是否允许手机登录
+                $settings = $this->setting->getSetting(self::MOBILE);
+                if (!isset($settings['is_login']) || !$settings['is_login']) {
+                    return response()->error(10001, 'Login Closed');
+                }
+                $credentials['mobile'] = $member['mobile'] = $member_name;
+            } elseif (verify_email($member_name)) {
+                $credentials['email'] = $member['email'] = $member_name;
+            } else {
+                $credentials['member_name'] = $member['member_name'] = $member_name;
+            }
+            try {
+                // attempt to verify the credentials and create a token for the user
+                if (!$token = JWTAuth::attempt($credentials)) {
+                    return response()->error(10006, 'Login Failed');
+                }
+            } catch (JWTException $e) {
+                // something went wrong whilst attempting to encode the token
+                return response()->error(10007, 'Login Failed');
+            }
+            if (!$member = $this->member->getMember($member)) {
+                return response()->error(10005, 'Member Info Not Found');
+            }
         }
-        switch ($type){
-            case 1:
-                $type =1;
-                break;
-            default:
-                $type =2;
-        }
-        
-        echo $type;
         
     }
 }

@@ -118,3 +118,9 @@ com + shft  + g  一个一个查找
 9、git reset HEAD filename 暂缓区的文件撤销掉 add后    
 10、git checkout -- filename   
 11 `git branch` 查看分支// `git checkout <name>`切换分支 // git branch \<name> 创建分支 //git branch -D \<name> 删除分支 // git merge \<name> // git checkout -b \<name> 创建并且切换分支  //删除远程分支 ：git push origin:name
+
+
+1 对个人有职业规划,了解工作的目标意义
+2 熟悉行业的发展 做好技术储备 对代码逻辑足够熟悉 能够胜任 做到不可或缺
+3 能够带着心去review 重复精简 对逻辑性 可行性 扩展性去考察优化
+4 能够坚持 定下心 持之以恒从事着一份工作
