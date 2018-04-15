@@ -35,8 +35,7 @@
             "Zfile\\":"app/Zfile/src/"
         },
         "files":[
-            "app/helpers.php",
-            "app/Http/Controllers/api/Member/Helpers/functions.php"
+            "app/helpers.php"
         ]
 
     },

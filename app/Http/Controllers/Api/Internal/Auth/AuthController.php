@@ -43,24 +43,20 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-
-       var_dump(exec('whoami',$res));
-//        $r = popen('which ffmpeg','r');
-        var_dump($res);die;
         $fill_able = [
             'name' => 'required|max:10|min:2',
             'password' => 'required|max:12|min:6',
         ];
         $message = [
-            'name.required' => 'User_Name Required',
-            'password.required' => 'Password Required'
+            'name.required' => '用户名不可缺少',
+            'password.required' => '密码不可缺少'
         ];
 
         $remember = $request->has('remember') ? intval($request->has('remember')) : 0;
         $validator = Validator::make(Input::all(), $fill_able, $message);
 
         if ($validator->fails()) {
-            return $validator->errors()->first();
+            return Response::error($validator->errors()->first());
         }
         $data = $request->all();
         if (!User::where('name', $data['name'])->count()) {
@@ -73,12 +69,13 @@ class AuthController extends Controller
             $user_id =  auth()->user()->id;
             auth()->user()->update(['last_login_time'=>time()]);
             $this->initPrms($user_id);
-            return $user = User::select('name','email','id','last_login_time')->find($user_id);
+             $user = User::select('name','email','id','last_login_time')->find($user_id);
+             return Response::success($user);
         }
 
         $ret = $this->auth->login($data);
+//        event(new Mail($login));
         return Response::error(1010,'Login Failed,Please Try Again');
-        event(new Mail($user));
 
     }
 
