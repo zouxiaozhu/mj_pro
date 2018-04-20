@@ -73,6 +73,8 @@ class AuthController extends Controller
              return Response::success($user);
         }
 
+        if(1){}
+
         $ret = $this->auth->login($data);
 //        event(new Mail($login));
         return Response::error(1010,'Login Failed,Please Try Again');
