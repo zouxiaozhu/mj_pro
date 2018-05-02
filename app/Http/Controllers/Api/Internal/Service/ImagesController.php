@@ -13,6 +13,7 @@ use App\Models\WaterSetting;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Facade;
 define('IMAGE',1);
 define('AUDIO',2);
 define('VIDEO',3);
@@ -29,6 +30,7 @@ class ImagesController extends Controller
         if (!$request->hasFile('file')) {
             return response()->error(1202, 'REQUIRED FILE');
         }
+
         $MOUDLE = $request->get('module') ?: $module;
         $time = Carbon::now()->timestamp;
         $file = $request->file('file');

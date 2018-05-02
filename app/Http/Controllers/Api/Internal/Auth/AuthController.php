@@ -29,7 +29,7 @@ class AuthController extends Controller
     public function __construct(AuthInterface $auth, Request $request, RoleInterface $role)
     {
         //this->middleware('auth.prms:all|user-operate');
-        $this->middleware('auth.prms:check|sss', ['except' => ['login', 'getLogin']]);
+//        $this->middleware('auth.prms:check|sss', ['except' => ['login', 'getLogin']]);
     }
     public function __construt(AuthInterface $auth, Request $request, RoleInterface $role)
     {
@@ -58,27 +58,29 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return Response::error($validator->errors()->first());
         }
+
         $data = $request->all();
         if (!User::where('name', $data['name'])->count()) {
             return Response::error(200,'Locked OR Must Reset');
         }
 
         // 登录用户
-        $login = OAuth::attempt(['name' => trim($data['name']), 'password' => $data['password']],$remember);
-        if($login){
-            $user_id =  auth()->user()->id;
-            auth()->user()->update(['last_login_time'=>time()]);
-            $this->initPrms($user_id);
-             $user = User::select('name','email','id','last_login_time')->find($user_id);
-             return Response::success($user);
+        $login = OAuth::attempt([
+            'name' => trim($data['name']),
+            'password' => $data['password']],
+            $remember
+        );
+
+        if ( !$login ) {
+            return Response::error(1010,'Login Failed,Please Try Again');
         }
 
-        if(1){}
-
-        $ret = $this->auth->login($data);
-//        event(new Mail($login));
-        return Response::error(1010,'Login Failed,Please Try Again');
-
+        $user_id =  auth()->user()->id;
+        auth()->user()->update(['last_login_time'=>time()]);
+        $this->initPrms($user_id);
+        $user = User::select('name','email','id','last_login_time')->find($user_id);
+        return Response::success($user);
+//      event(new Mail($login));
     }
 
     public function create(Request $request)
@@ -127,10 +129,13 @@ class AuthController extends Controller
 
     public function initPrms($id)
     {
+
         $role = auth()->user()->role->toArray();
-        $prms = $this->arrayFilter(array_column($role,'prms'));
         $role_ids = $this->arrayFilter(array_column($role,'id'));
-        $prms_info = array_column(Roles::getPrms($role_ids)->get()->toArray(),'prm');
+        $auths = Roles::getPrms($role_ids)->get()->toArray();
+        $prms_info = array_column($auths,'prm');
+var_export($auths);die;
         session(['prms_info'=>$this->arrayFilter($prms_info)]);
+
     }
 }
