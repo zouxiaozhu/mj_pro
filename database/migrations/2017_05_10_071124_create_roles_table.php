@@ -87,7 +87,7 @@ class CreateRolesTable extends Migration
     public function createNavRole(){
         Schema::create('role_navs', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
-            $table->integer('role_id')->commemt('名字')->default('');
+                $table->integer('role_id')->commemt('名字')->default(0);
             $table->string('nav_fid')->comment('')->default(0);
             $table->timestamps();
         });
