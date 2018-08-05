@@ -16,6 +16,9 @@ class CreateRolesTable extends Migration
         $this->createRole();
         $this->createAuth();
         $this->createRoleAuth();
+        $this->createNav();
+        $this->createNavRole();
+
     }
 
     /**
@@ -39,6 +42,7 @@ class CreateRolesTable extends Migration
             $table->char('name', 10)->commemt('名字')->default('');
             $table->enum('super_admin', [0, 1])->default(0);
             $table->string('description', 100)->default('');
+            $table->tinyInteger('enabled')->default(1);
             $table->timestamps();
         });
 
@@ -57,6 +61,7 @@ class CreateRolesTable extends Migration
             $table->char('name', 10)->commemt('名字')->default('');
             $table->string('controller')->comment('')->default('');
             $table->string('action')->comment('')->default('');
+            $table->tinyInteger('enabled')->default(1);
             $table->timestamps();
         });
     }
@@ -65,7 +70,7 @@ class CreateRolesTable extends Migration
     {
         Schema::create('role_auth', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
-            $table->integer('role_id')->commemt('名字')->default('');
+            $table->integer('role_id')->commemt('名字')->default(0);
             $table->string('auth_id')->comment('auth_id')->default(0);
             $table->timestamps();
         });
@@ -76,19 +81,22 @@ class CreateRolesTable extends Migration
     {
         Schema::create('navs', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
-            $table->integer('name')->commemt('名字')->default('');
-            $table->string('key')->comment('')->default('');
-            $table->string('depth')->comment('')->default(0);
-            $table->string('nav_fid')->comment('')->default(0);
+            $table->string('name', 30 )->commemt('名字')->default('');
+            $table->string('key', 30)->comment('')->default('');
+            $table->integer('depth')->comment('')->default(0);
+            $table->integer('nav_fid')->comment('')->default(0);
+            $table->tinyInteger('enabled')->default(1);
+            $table->string('url')->default(1);
             $table->timestamps();
         });
+
     }
 
     public function createNavRole(){
         Schema::create('role_navs', function (Blueprint $table) {
             $table->increments('id')->comment('主键');
-                $table->integer('role_id')->commemt('名字')->default(0);
-            $table->string('nav_fid')->comment('')->default(0);
+            $table->integer('role_id')->commemt('名字')->default(0);
+            $table->integer('nav_id')->comment('父级')->default(0);
             $table->timestamps();
         });
     }

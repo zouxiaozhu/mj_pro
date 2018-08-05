@@ -1,21 +1,36 @@
 <?php
 
 namespace App\Http\Routes;
+use  Illuminate\Support\Facades\Route;
+ini_set("error_reporting","E_ALL & ~E_NOTICE");
+
 
 class AuthRoutes
 {
     public function map()
     {
         // 获取登录页面
+        Route::group(['middleware' => 'admin.auth'], function () {
+            Route::get('/', 'Api\Internal\Service\ViewsController@getHome');
+        });
+
+        // view
         $api = app('Dingo\Api\Routing\Router');
         $api->version(env('API_VERSION'), function ($api) {
             $api->group(['namespace' => 'App\Http\Controllers\Api\Internal'], function ($api) {
-                $api->group(['namespace' => 'Auth'], function ($api) {
-                    $api->get('in', 'AuthController@getLogin');
-
+                $api->group(['namespace' => 'Service'], function ($api) {
+                    $api->group(['prefix' => 'service'], function ($api) {
+                        $api->get('in', 'ViewsController@getLogin');
+                        $api->get('home','ViewsController@getHome');
+                        $api->any('add-member','ViewsController@addMember');
+                        $api->get('member-list','ViewsController@memberList');
+                        $api->any('update-member','ViewsController@addMember');
+                        $api->get('add-order','ViewsController@getOrder');
+                    });
                 });
             });
         });
+
         // Auth
         $api = app('Dingo\Api\Routing\Router');
         $api->version(env('API_VERSION'), function ($api) {
@@ -23,7 +38,7 @@ class AuthRoutes
                 $api->group(['namespace' => 'Auth'], function ($api) {
                     $api->group(['prefix' => 'auth'], function ($api) {
                         $api->post('login', 'AuthController@login');  // 用户登录的基本信息
-                        $api->get('logout', 'AuthController@logout'); // 用户退出
+                        $api->get('logout', ['middleware' => 'admin.auth', 'uses' => 'AuthController@logout']); // 用户退出
                         $api->post('create', 'AuthController@create');
                         $api->put('update', 'AuthController@update');
                         $api->get('role', ['middleware' => 'auth', 'uses' => 'RoleController@roleList']);
@@ -31,6 +46,22 @@ class AuthRoutes
                     });
                 });
             });
+
+
+            // member
+            $api = app('Dingo\Api\Routing\Router');
+            $api->version(env('API_VERSION'), function ($api) {
+                $api->group(['namespace' => 'App\Http\Controllers\Api\Internal'], function ($api) {
+                    $api->group(['namespace' => 'Member'], function ($api) {
+                        $api->group(['prefix' => 'member', 'middleware' => 'admin.auth'], function ($api) {
+                            $api->post('add', 'MemberController@addMember' );  // 用户登录的基本信息
+                            $api->get('list', 'MemberController@memberList' );  // 用户登录的基本信息
+                            $api->get('delete', 'MemberController@delMember' );  // 用户登录的基本信息
+                        });
+                    });
+                });
+            });
+
 
             // Service
             $api = app('Dingo\Api\Routing\Router');

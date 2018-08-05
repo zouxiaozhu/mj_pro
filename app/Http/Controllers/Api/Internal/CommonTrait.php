@@ -1,13 +1,17 @@
 <?php
 namespace App\Http\Controllers\Api\Internal;
 trait CommonTrait{
-    public function arrayFilter($array = [], $column = ''){
-         $new_array = array_filter(array_unique($array));
-         if ( !$column) {
+    public function arrayFilter($array = [], $column = '',$return_by_field= false) {
+         $new_array = array_filter(($array));
+         if ( ! $column) {
             return $new_array;
          }
 
-         return array_column($new_array, $column);
+         if ( ! $return_by_field) {
+             return array_column($new_array, $column);
+         }
+
+        return array_column($new_array, null, $column);
     }
 
 }

@@ -18,6 +18,9 @@ class RolesTableSeeder extends Seeder
         $this->createAuths();
         $this->createRoles();
         $this->createAuthsRoles();
+        $this->createRoles();
+        $this->createNavs();
+        $this->createRoleNavs();
     }
 
     private function createRoles()
@@ -25,12 +28,11 @@ class RolesTableSeeder extends Seeder
         $role_user = [[
             'user_id' => 1,
             'role_id' => 1
-        ],
-            [
-                'user_id' => 1,
-                'role_id' => 2
-            ]
-        ];
+        ], [
+            'user_id' => 1,
+            'role_id' => 2
+        ]];
+
         if (Role_User::count() == 0) {
             DB::table('user_role')->insert($role_user);
         }
@@ -38,18 +40,14 @@ class RolesTableSeeder extends Seeder
         $role = [[
             'id'          => 1,
             'name'        => '超级管理员',
-            'prms'        => '1',
             'super_admin' => 1,
             'description' => '我就是超级管理员,无所不能,攻无不克,战无不胜',
-        ],
-            [
-                'id'          => 2,
-                'name'        => '管理员',
-                'prms'        => '1',
-                'super_admin' => 1,
-                'description' => '掌管着所有的权限分发',
-
-            ]];
+        ], [
+            'id'          => 2,
+            'name'        => '管理员',
+            'super_admin' => 0,
+            'description' => '掌管着所有的权限分发',
+        ]];
 
         if (Roles::count() == 0) {
             foreach ($role as $rol) {
@@ -59,19 +57,16 @@ class RolesTableSeeder extends Seeder
     }
 
     private function createAuths()
-
-{
-        $auth = [[
-            'id'=>1,
-            'prm'=>'all',
-            'name'=>'所有权限'],
+    {
+        $auth = [
             [
-             'id'=>2,
-                'prm'=>'post',
-                'name'=>'帖子'
-        ]
+             'id' => 1,
+             'name' => '登录',
+             'controller' => 'AuthController',
+             'action' => 'getLogin'
+            ]
         ];
-        if(!Auth::count()){
+        if(! Auth::count()) {
             DB::table('auths')->truncate();
             DB::table('auths')->insert($auth);
         }
@@ -81,19 +76,162 @@ class RolesTableSeeder extends Seeder
     {
         $role_auth = [
             [
-            'id'=>1,
-            'auth_id'=>'1',
-            'auth_id'=>'1'],
-            [
-                'id'=>2,
-                'auth_id'=>'2',
-                'auth_id'=>'2'
+                'id' => 1,
+                'role_id' => 1,
+                'auth_id' => 1
+            ], [
+                'id' => 2,
+                'role_id' => 2,
+                'auth_id' => 2
             ]
         ];
-        if(!Role_Auth::count()){
-            DB::table('role_auth')->truncate();
-            DB::table('role_auth')->insert($role_auth);
-        }
+        DB::table('role_auth')->truncate();
+        DB::table('role_auth')->insert($role_auth);
+
+    }
+
+    private function createRoleNavs()
+    {
+        $role_nav = [
+            [
+                'role_id'=> 1,
+                'nav_id'=> 1
+            ], [
+                'role_id'=> 1,
+                'nav_id'=> 2
+            ],[
+                'role_id'=> 1,
+                'nav_id'=> 3
+            ],[
+                'role_id'=> 1,
+                'nav_id'=> 4
+             ],[
+                'role_id'=> 1,
+                'nav_id'=> 5
+            ],[
+                'role_id'=> 1,
+                'nav_id'=> 6
+            ]
+        ];
+
+        DB::table('role_navs')->truncate();
+        DB::table('role_navs')->insert($role_nav);
+
+    }
+
+    private function createNavs()
+    {
+        $navs = [
+            [
+                'id' => 1,
+                'name' => '订单管理',
+                'key' => '订单管理',
+                'depth' => 1,
+                'nav_fid' => 0,
+                'url' => ''
+            ], [
+                'id' => 2,
+                'name' => '新建订单',
+                'key' => '新建订单',
+                'depth' => 2,
+                'nav_fid' => 1,
+                'url' => '/api/service/add-order'
+            ], [
+                'id' => 3,
+                'name' => '订单列表',
+                'key' => '新建列表',
+                'depth' => 2,
+                'nav_fid' => 1,
+                'url' => '/api/service/order-list'
+            ],[
+                'id' => 4,
+                'name' => '会员管理',
+                'key' => '会员管理',
+                'depth' => 1,
+                'nav_fid' => 0,
+                'url' => ''
+            ], [
+                'id' => 5,
+                'name' => '会员新增',
+                'key' => '会员新增',
+                'depth' => 2,
+                'nav_fid' => 4,
+                'url' => '/api/service/add-member'
+            ],[
+                'id' => 6,
+                'name' => '会员列表',
+                'key' => '会员列表',
+                'depth' => 2,
+                'nav_fid' => 4,
+                'url' => '/api/service/member-list'
+            ],[
+                'id' => 7,
+                'name' => '会员卡管理',
+                'key' => '会员管理',
+                'depth' => 1,
+                'nav_fid' => 0,
+                'url' => ''
+            ], [
+                'id' => 8,
+                'name' => '会员卡新增',
+                'key' => '会员卡新增',
+                'depth' => 2,
+                'nav_fid' => 7,
+                'url' => '/api/service/add-package'
+            ],[
+                'id' => 9,
+                'name' => '会员卡列表',
+                'key' => '会员卡列表',
+                'depth' => 2,
+                'nav_fid' => 7,
+                'url' => '/api/service/package'
+            ],
+        ];
+        DB::table('navs')->truncate();
+        DB::table('navs')->insert($navs);
+    }
+
+    private function createPackages()
+    {
+        //('业务类型 1次数  2折扣');
+        $package = [
+            [
+                'origin_price' => 80,
+                'discount' => 8,
+                'price' => (8/100)*80,
+                'type' => 1,
+                'business_type' => 2,
+                'counts' => 0
+            ],[
+                'origin_price' => 60,
+                'discount' => 8,
+                'price' => (8/100)*60,
+                'type' => 1,
+                'business_type' => 2,
+                'counts' => 0
+            ],[
+                'origin_price' => 0,
+                'discount' => 0,
+                'price' => 0,
+                'type' => 1,
+                'business_type' => 1,
+                'counts' => 10
+            ],[
+                'origin_price' => 0,
+                'discount' => 0,
+                'price' => 0,
+                'type' => 1,
+                'business_type' => 1,
+                'counts' => 20
+            ]
+        ];
+        DB::table('member_packages')->truncate();
+        DB::table('member_packages')->insert($package);
+    }
+
+    public function createMemberCards()
+    {
+
     }
 
 }

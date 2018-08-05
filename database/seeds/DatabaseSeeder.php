@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,8 +14,6 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
         $this->call(UsersTableSeeder::class);
         $this->call(RolesTableSeeder::class);
-        $this->call(WaterSettingSeeder::class);
-        $this->call(MemberTableSeeder::class);
         Model::reguard();
     }
 }

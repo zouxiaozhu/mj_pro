@@ -65,7 +65,7 @@ return [
     |
     */
     
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'zh_cn',
     
     /*
     |--------------------------------------------------------------------------
@@ -151,7 +151,7 @@ return [
         Laravel\Cashier\CashierServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        App\Post\Providers\PostServiceProvider::class,
+//        App\Post\Providers\PostServiceProvider::class,
      //  \Zfile\ZMediaServiceProvider::class
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
     ],

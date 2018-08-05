@@ -31,16 +31,12 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique()->nullable();
+            $table->string('name')->unique();
             $table->string('password');
-            $table->string('email')->nullable();
-            $table->integer('phone')->unique()->nullable();
-            $table->integer('create_user_id')->nullable();
-            $table->enum('locked',[0,1])->default(0);
-            $table->tinyInteger('reset_pwd')->default(0);
-            $table->integer('access_id')->comment();
-            $table->string('access_token')->comment();
-            $table->enum('is_develop',[0,1])->comment();
+            $table->string('email')->default('');
+            $table->string('phone' ,20)->unique()->default('');
+            $table->integer('create_user_id')->default(0);
+            $table->enum('enabled', [0,1])->default(0);
             $table->string('last_login_time')->default(time())->nullable();
             $table->string('avatar');
             $table->rememberToken();
