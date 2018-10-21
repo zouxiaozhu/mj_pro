@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Api\Internal\Member;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Member\Member;
 use App\Models\User;
@@ -17,14 +18,22 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
-class MemberController extends Controller
+class MemberController extends BaseController
 {
     public function addMember(Request $request)
     {
         $params = $request->all();
-        $fill_able = ['member_name' => 'required|max:10|min:2', 'refer_user_id' => 'integer', 'tel' => 'required|size:11'];
+        $fill_able = [
+            'member_name' => 'required|max:10|min:2',
+            'refer_user_id' => 'integer',
+            'tel' => 'required|size:11'
+        ];
 
-        $message = ['member_name.required' => 'member_name can not empty', 'refer_user_id.integer' => 'refer_user_id can not illege', 'tel.required' => 'tel params error'];
+        $message = [
+            'member_name.required' => 'member_name can not empty',
+            'refer_user_id.integer' => 'refer_user_id can not illege',
+            'tel.required' => 'tel params error'
+        ];
 
         $validator = Validator::make( $params, $fill_able, $message );
 
@@ -91,6 +100,17 @@ class MemberController extends Controller
         }
         return Response::error([], '删除会员失败');
 
+    }
+
+    public function searchUser(Request $request)
+    {
+        $userInfo = Member::where('tel', $request->get('user_prop'))
+            ->orWhere('member_name', $request->get('user_prop'))->first();
+        if (!$userInfo) {
+            return $this->error([], '没有用户信息, 请核实');
+        }
+
+        return $this->success($userInfo, '成功');
     }
 
     public function memberList(Request $request)

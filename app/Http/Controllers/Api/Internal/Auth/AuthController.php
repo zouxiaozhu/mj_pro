@@ -126,7 +126,7 @@ class AuthController extends Controller
         if (!auth()->user()->id) {
             return response()->error([], 'Already Logout');
         }
-        OAuth::logout();
+        session_destroy();
         session()->flush();
 
         if (OAuth::check()) {

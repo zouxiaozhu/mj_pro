@@ -111,6 +111,18 @@ class RolesTableSeeder extends Seeder
             ],[
                 'role_id'=> 1,
                 'nav_id'=> 6
+            ],[
+                'role_id'=> 1,
+                'nav_id'=> 7
+            ],[
+                'role_id'=> 1,
+                'nav_id'=> 8
+            ],[
+                'role_id'=> 1,
+                'nav_id'=> 9
+            ],[
+            'role_id'=> 1,
+            'nav_id'=> 10
             ]
         ];
 
@@ -166,22 +178,22 @@ class RolesTableSeeder extends Seeder
                 'url' => '/api/service/member-list'
             ],[
                 'id' => 7,
-                'name' => '会员卡管理',
-                'key' => '会员管理',
+                'name' => '套餐管理',
+                'key' => '套餐管理',
                 'depth' => 1,
                 'nav_fid' => 0,
                 'url' => ''
             ], [
                 'id' => 8,
-                'name' => '会员卡新增',
-                'key' => '会员卡新增',
+                'name' => '套餐新增',
+                'key' => '套餐新增',
                 'depth' => 2,
                 'nav_fid' => 7,
-                'url' => '/api/service/add-package'
+                    'url' => '/api/service/add-package'
             ],[
                 'id' => 9,
-                'name' => '会员卡列表',
-                'key' => '会员卡列表',
+                'name' => '套餐列表',
+                'key' => '套餐列表',
                 'depth' => 2,
                 'nav_fid' => 7,
                 'url' => '/api/service/package'

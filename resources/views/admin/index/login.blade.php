@@ -9,13 +9,14 @@
     <link href="{{url('js/layer/theme/default/layer.css')}}" rel="stylesheet" type="text/css" />
 </head>
 <body background="{{url('images/bodybg.jpg')}}">
-<div id="wrapper">
+<canvas id="canvas" style="position: absolute;left: 0px;top: 0px;z-index: 0;" width="1815" height="658"></canvas>
+<div id="wrapper" style="position: absolute;left: 50%;top: 50%;z-index: 1;transform: translate(-50%, -50%)">
     <section id="content" class="m-t-lg wrapper-md animated fadeInUp ">
         <div class="container aside-xl" style="margin-top: 48px;">
             <a class="navbar-brand block"><span class="h1 font-bold" style="color: #ffffff">管理员登录</span></a>
             <section class="m-b-lg">
                 <header class="wrapper text-center">
-                    <strong class="text-sucess">管理员登录</strong>
+                    <strong class="text-success">管理员登录</strong>
                 </header>
                 <form action="javascript:;" method="post" >
                     <div class="form-group">
@@ -40,6 +41,7 @@
 <script src="{{url('js/bootstrap.js')}}"></script>
 <script src="{{url('js/vue-resource.js')}}"></script>
 <script src="{{url('js/layer/layer.js')}}"></script>
+<script src="http://cp.ceshi.che300.com/js/canvas.js"></script>
 <script>
     var Vue = new Vue({
         el:"#wrapper",
@@ -66,7 +68,7 @@
                     return;
                 }
                 console.log(user_info)
-                this.$http.post(this.login_url , user_info, {emulateJSON: true})
+                this.$http.post(this.login_url, user_info, {emulateJSON: true})
                     .then(function (data) {
                         if (data.body.status) {
                             window.location.href = '/api/service/home';

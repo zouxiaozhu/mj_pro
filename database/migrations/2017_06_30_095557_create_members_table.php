@@ -57,27 +57,26 @@ class CreateMembersTable extends Migration
 
     public function create_member_card()
     {
-        Schema::create('member_packages', function (Blueprint $table) {
+        Schema::create('packages', function (Blueprint $table) {
             $table->engine = 'Innodb';
             $table->increments('id');
-            $table->decimal('origin_price', 6, 2)->comment('')->default(0);
+            $table->decimal('origin_price', 8, 2)->comment('')->default(0);
             $table->integer('discount')->comment('')->default(0);
-            $table->decimal('price', 6, 2)->comment('')->default(0);
-            $table->tinyInteger('type')->comment('状态，1 美甲 2 纹眉')->default(0);
-            $table->tinyInteger('business_type')->comment('业务类型 1次数  2折扣');
+            $table->decimal('price', 8, 2)->comment('')->default(0);
+            $table->tinyInteger('business_type')->comment('业务类型 1美甲次数  2美甲折扣　３纹眉次数　４纹眉折扣');
             $table->tinyInteger('counts')->comment('次数')->default(1);
             $table->tinyInteger('enabled')->comment('状态，0禁用，1活跃')->default(1);
+            $table->integer('operate_user_id')->comment('状态，0禁用，1活跃')->default(0);
             $table->timestamps();
         });
 
-        Schema::create('member_package_cards', function (Blueprint $table) {
+        Schema::create('member_package', function (Blueprint $table) {
             $table->engine = 'Innodb';
             $table->string('card_no')->index();
-            $table->tinyInteger('card_type')->comment('1 美甲，2 纹眉')->default(0);
             $table->integer('member_id')->comment('')->default(0);
             $table->integer('package_id')->comment('')->default(0);
             $table->tinyInteger('counts')->comment('次数')->default(0);
-            $table->decimal('amount',6, 2)->comment('账户金额')->default(0);
+            $table->decimal('amount',8, 2)->comment('账户金额')->default(0);
             $table->tinyInteger('enabled')->comment('状态，0禁用，1活跃')->default(1);
             $table->timestamps();
         });

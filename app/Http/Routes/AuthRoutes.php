@@ -21,11 +21,13 @@ class AuthRoutes
                 $api->group(['namespace' => 'Service'], function ($api) {
                     $api->group(['prefix' => 'service'], function ($api) {
                         $api->get('in', 'ViewsController@getLogin');
-                        $api->get('home','ViewsController@getHome');
-                        $api->any('add-member','ViewsController@addMember');
-                        $api->get('member-list','ViewsController@memberList');
-                        $api->any('update-member','ViewsController@addMember');
-                        $api->get('add-order','ViewsController@getOrder');
+                        $api->get('home', 'ViewsController@getHome');
+                        $api->any('add-member', 'ViewsController@addMember');
+                        $api->get('member-list', 'ViewsController@memberList');
+                        $api->any('update-member', 'ViewsController@addMember');
+                        $api->get('add-order', 'ViewsController@getOrder');
+                        $api->get('package', 'ViewsController@packageList');
+                        $api->get('add-package/{id?}', 'ViewsController@package');
                     });
                 });
             });
@@ -57,11 +59,41 @@ class AuthRoutes
                             $api->post('add', 'MemberController@addMember' );  // 用户登录的基本信息
                             $api->get('list', 'MemberController@memberList' );  // 用户登录的基本信息
                             $api->get('delete', 'MemberController@delMember' );  // 用户登录的基本信息
+                            $api->any('search', 'MemberController@searchUser' );  // 用户登录的基本信息
                         });
                     });
                 });
             });
 
+
+            // package
+            $api = app('Dingo\Api\Routing\Router');
+            $api->version(env('API_VERSION'), function ($api) {
+                $api->group(['namespace' => 'App\Http\Controllers\Api\Internal'], function ($api) {
+                    $api->group(['namespace' => 'Package'], function ($api) {
+                        $api->group(['prefix' => 'package', 'middleware' => 'admin.auth'], function ($api) {
+                            $api->post('add', 'PackageController@addPackage' );
+                            $api->get('package', 'PackageController@package' );
+                            $api->get('delete', 'PackageController@delPackage' );
+                            $api->get('package/{id}', 'PackageController@show' );
+                            $api->get('business', 'PackageController@businessType' );
+                            $api->get('list', 'PackageController@packageList' );
+                        });
+                    });
+                });
+            });
+
+            // order
+            $api = app('Dingo\Api\Routing\Router');
+            $api->version(env('API_VERSION'), function ($api) {
+                $api->group(['namespace' => 'App\Http\Controllers\Api\Internal'], function ($api) {
+                    $api->group(['namespace' => 'Order'], function ($api) {
+                        $api->group(['prefix' => 'order', 'middleware' => 'admin.auth'], function ($api) {
+                            $api->post('add', 'OrderController@addOrder');
+                        });
+                    });
+                });
+            });
 
             // Service
             $api = app('Dingo\Api\Routing\Router');

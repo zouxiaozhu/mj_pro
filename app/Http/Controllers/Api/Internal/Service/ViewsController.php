@@ -41,4 +41,16 @@ class ViewsController  extends Controller
     {
         return view('admin/order/add');
     }
+
+    public function packageList()
+    {
+        return view('admin/package/list');
+    }
+
+    public function package($id = 0)
+    {
+        return view('admin/package/add', [
+            'id' => intval($id)
+        ]);
+    }
 }

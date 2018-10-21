@@ -123,13 +123,15 @@
                 .then(function (data) {
                     if (data.body.status) {
                         layer.alert(data.body.msg)
-                        this.reloadPage()
+                        setTimeout(this.reloadPage, 1000)
                         return ;
                     } else {
                         console.log(data.body.msg)
                         layer.alert(data.body.msg)
                     }
                 }, function (response) {
+                }).then(function () {
+
                 })
             },
             reloadPage: function(){

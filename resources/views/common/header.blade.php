@@ -22,7 +22,6 @@
     <script src="{{url('js/bootstrap.js')}}"></script>
     <script src="{{url('js/vue-resource.js')}}"></script>
     <link href="{{url('js/layer/theme/default/layer.css')}}" rel="stylesheet" type="text/css" />
-
     <script src="{{url('js/layer/layer.js')}}"></script>
 </head>
 <body>

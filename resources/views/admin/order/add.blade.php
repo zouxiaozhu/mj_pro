@@ -33,16 +33,56 @@
                                  <label class="col-sm-12 ">手机号码/用户名</label>
                                  <div class="col-sm-5">
                                      <input type="text"
-                                            class="form-control" placeholder="手机号码/用户名"/>
+                                            v-model="user_prop" class="form-control" placeholder="手机号码/用户名"/>
                                  </div>
-                                 <button type="button" id="query-coins" class="btn btn-primary">查询用户信息</button>
+                                 <button type="button" id="query-coins" v-on:click="searchUser" class="btn btn-primary">查询用户信息</button>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-sm-12">联系方式</label>
                                 <div class="col-sm-6">
-                                    <input type="text" id="minus-coin-tel" class="form-control" placeholder="只能输入一个手机号"/>
+                                    <input type="text" id="minus-coin-tel" v-model="tel" class="form-control" placeholder="只能输入一个手机号"/>
                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label>操作类型</label>
+                                <div class="radio" style="display: inline-block;margin-left: 1rem">
+
+                                    <label style="margin-left: 2rem">
+                                        <input type="radio" name="cost_type" value="1"> 充值
+                                    </label>
+
+                                    <label style="margin-left: 2rem">
+                                        <input type="radio" name="cost_type" value="2"> 消费
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>套餐类型</label>
+                                <div class="radio" style="display: inline-block;margin-left: 1rem">
+                                        <span v-for="item in business_info">
+                                            <label style="margin-left: 2rem">
+                                                <input type="radio" name="business_type" :value="item.business_type"
+                                                     > @{{item.msg}}
+                                            </label>
+                                        </span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>次数</label>
+                                <select name="package_list" v-model="package_list" >
+                                    <option v-for="(item,index) in package_list"
+                                            :value="item.origin_price">
+                                        @{{ item.origin_price }}
+                                    </option>
+                                </select>
                             </div>
 
                             <div class="form-group">
@@ -58,19 +98,72 @@
         </div>
     </div>
 </div>
-
 <script>
     var orderVue = new Vue({
         el : "#order-add",
         data:{
-            member_id : 0
+            member_id : 0,
+            user_prop : '',
+            search_user_url: '/api/member/search',
+            business_url :'/api/package/business',
+            package_url :'/api/package/list',
+            submit_order_url :'/api/order/add',
+            tel:'',
+            business_info : [],
+            package_list:[],
         },
         methods:{
             submitOrder: function () {
+                if (! this.member_id ) {
+                    layer.alert("先选择用户"); return false;
+                }
                 
+                layer.confirm("确定提交吗？", function () {
+
+                });
+            },
+            businessInfo : function () {
+                let me = this
+                this.$http.get(this.business_url)
+                    .then(function(data){
+                        me.business_info = data.body.data
+                    }, function(response){})
+            },
+            packageList:function() {
+                let me = this
+                this.$http.get(this.package_url)
+                    .then(function(data){
+                        me.package_list = data.body.data
+                    }, function(response){})
+            },
+            searchUser:function () {
+                this.$http.post(this.search_user_url, {user_prop : this.user_prop,}, {emulateJSON: true})
+                    .then(function (data) {
+                        if (! data.body.status) {
+                            layer.alert(data.body.msg)
+                            this.user_prop = '';
+                            return false;
+                        } else {
+                            layer.alert(
+                                '用户姓名 : ' + data.body.data.member_name + "<br/>" +
+                                "手机号码 : " + data.body.data.tel + "<br/>" +
+                                "注册时间 : " + data.body.data.created_at
+                            )
+                            this.member_id = data.body.data.id
+                            this.tel = data.body.data.tel
+
+                        }
+                    }, function (response) {
+                    }).then(function () {
+
+                })
             }
         },
-        created:function(){}
+        created:function(){
+            this.businessInfo()
+            this.packageList()
+
+        }
     })
 
 
