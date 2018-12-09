@@ -28,6 +28,7 @@ class AuthRoutes
                         $api->get('add-order', 'ViewsController@getOrder');
                         $api->get('package', 'ViewsController@packageList');
                         $api->get('add-package/{id?}', 'ViewsController@package');
+                        $api->get('order-list', 'ViewsController@orderList');
                     });
                 });
             });
@@ -88,8 +89,11 @@ class AuthRoutes
             $api->version(env('API_VERSION'), function ($api) {
                 $api->group(['namespace' => 'App\Http\Controllers\Api\Internal'], function ($api) {
                     $api->group(['namespace' => 'Order'], function ($api) {
-                        $api->group(['prefix' => 'order', 'middleware' => 'admin.auth'], function ($api) {
-                            $api->post('add', 'OrderController@addOrder');
+                        // 'admin.auth'
+                        $api->group(['prefix' => 'order', 'middleware' => []], function ($api) {
+                            $api->post('add', 'OrderController@rechargeOrder');
+                            $api->get('list', 'OrderController@orderList');
+                            $api->get('count', 'OrderController@count');
                         });
                     });
                 });

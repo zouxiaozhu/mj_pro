@@ -56,8 +56,7 @@
                                 <div class="radio" style="display: inline-block;margin-left: 1rem">
                                         <span v-for="item in business_info">
                                             <label style="margin-left: 2rem">
-                                                <input type="radio" name="business_type" :value="item.business_type"
-                                                       v-model="current_type"
+                                                <input type="radio" name="business_type" :value="item.business_type" v-model="current_type"
                                                        v-on:click="changeCurrent(item.business_type)">
                                                 @{{item.msg}}
                                             </label>
@@ -82,8 +81,7 @@
                                             </thead>
                                             <tbody>
                                             <tr v-for="package in current_packages">
-                                                <td><input type="radio" :value="package.id" v-model="package_id"
-                                                            name="packages"></td>
+                                                <td><input type="radio" value="package.id" name="packages"></td>
                                                 <td>@{{package.id}}</td>
                                                 <td>@{{package.origin_price}}</td>
                                                 <td>@{{package.price}}</td>
@@ -98,9 +96,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button type="button" @click="submitOrder" class="btn btn-bg btn-info col-xs-offset-5">
-                                    提交
-                                </button>
+                                <button type="button" @click="" class="btn btn-bg btn-info col-xs-offset-5">提交 </button>
 
                             </div>
                         </form>
@@ -135,31 +131,12 @@
                     layer.alert("先选择用户");
                     return false;
                 }
-                if (!this.package_id) {
-                    layer.alert("请选择套餐");
-                    return false;
-                }
-                let me = this
-                layer.confirm("确定提交吗？", function () {
-                    var adddata = {
-                        'member_id': me.member_id,
-                        'package_id': me.package_id,
-                    }
-                    me.$http.post(me.submit_order_url, adddata, {emulateJSON: true})
-                        .then(function (data) {
-                            if (data.body.status) {
-                                layer.alert(data.body.msg)
-                                return false;
-                            } else {
-                                layer.alert("添加失败，请重试")
-                                return false;
-                            }
 
-                        }, function (response) {
-                        })
+                layer.confirm("确定提交吗？", function () {
+
                 });
             },
-            changeCurrent: function (current_type) {
+            changeCurrent:function(current_type){
                 this.current_packages = this.business_info[current_type].packages;
                 console.log(current_type)
             },
@@ -169,7 +146,7 @@
                     .then(function (data) {
                         me.business_info = data.body.data
                         if (me.current_type == 0) {
-                            me.current_type = me.business_info[1].business_type;
+                            me.current_type = me.business_info[0].business_type;
                             me.current_packages = me.business_info[me.current_type].packages;
                         } else {
                             me.current_packages = me.business_info[me.current_type].packages;
@@ -184,7 +161,8 @@
                         me.package_list = data.body.data
                     }, function (response) {
                     })
-            },
+            }
+            ,
             searchUser: function () {
                 this.$http.post(this.search_user_url, {user_prop: this.user_prop,}, {emulateJSON: true})
                     .then(function (data) {
@@ -193,14 +171,12 @@
                             this.user_prop = '';
                             return false;
                         } else {
-                            count = data.body.data.package ? data.body.data.package.counts : 0
-                            amount = data.body.data.package ? data.body.data.package.amount : 0
                             layer.alert(
                                 '用户姓名 : ' + data.body.data.member_name + "<br/>" +
                                 "手机号码 : " + data.body.data.tel + "<br/>" +
                                 "注册时间 : " + data.body.data.created_at + "<br/>" +
-                                "套餐次数 : " + count + "<br/>" +
-                                "账户余额 : " + amount + "<br/>"
+                                "套餐次数 : " + data.body.data.package.counts + "<br/>" +
+                                "账户余额 : " + data.body.data.package.amount + "<br/>"
                             )
                             this.member_id = data.body.data.id
                             this.tel = data.body.data.tel

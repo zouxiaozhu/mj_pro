@@ -105,7 +105,10 @@ class MemberController extends BaseController
     public function searchUser(Request $request)
     {
         $userInfo = Member::where('tel', $request->get('user_prop'))
-            ->orWhere('member_name', $request->get('user_prop'))->first();
+            ->orWhere('member_name', $request->get('user_prop'))
+            ->with('package')
+            ->first();
+
         if (!$userInfo) {
             return $this->error([], '没有用户信息, 请核实');
         }

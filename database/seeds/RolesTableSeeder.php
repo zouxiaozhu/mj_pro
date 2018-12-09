@@ -143,7 +143,7 @@ class RolesTableSeeder extends Seeder
                 'url' => ''
             ], [
                 'id' => 2,
-                'name' => '新建订单',
+                'name' => '充值订单',
                 'key' => '新建订单',
                 'depth' => 2,
                 'nav_fid' => 1,
@@ -197,7 +197,16 @@ class RolesTableSeeder extends Seeder
                 'depth' => 2,
                 'nav_fid' => 7,
                 'url' => '/api/service/package'
-            ],
+            ], [
+
+                'id' => 10,
+                'name' => '消费订单',
+                'key' => '消费订单',
+                'depth' => 2,
+                'nav_fid' => 1,
+                'url' => '/api/service/consume`````-order'
+            ]
+
         ];
         DB::table('navs')->truncate();
         DB::table('navs')->insert($navs);

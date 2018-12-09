@@ -53,4 +53,10 @@ class ViewsController  extends Controller
             'id' => intval($id)
         ]);
     }
+
+    public function orderList()
+    {
+        return view('admin/order/list', []);
+    }
+
 }

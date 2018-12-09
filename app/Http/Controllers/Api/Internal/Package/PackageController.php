@@ -37,10 +37,15 @@ class PackageController extends BaseController
         foreach ($msgs as $key => $msg) {
             $business_type[] = [
                 'business_type' => $key,
-                'msg' => $msg
+                'msg' => $msg,
+                'packages' => Package::where('enabled', 1)->where('business_type', $key)
+                    ->get()->toArray()
             ];
         }
-        return $this->success($business_type, "");
+
+
+
+        return $this->success(collect($business_type)->keyBy('business_type')->toArray(), "");
     }
 
     public function addPackage()
@@ -58,7 +63,8 @@ class PackageController extends BaseController
         $insert = [
             'origin_price' => $origin_price,
             'business_type' => $business_type,
-            'enabled' => 1
+            'enabled' => 1,
+            'name' => $this->request->input('name')
         ];
 
         if (in_array($business_type, [2, 4])) {
@@ -73,7 +79,6 @@ class PackageController extends BaseController
 
         } else {
             // counts
-
             $counts = $this->request->get('counts', 0 );
             if (! $counts or !is_numeric($counts) or $counts < 1 ) {
                 return  Response::error([], '次数不合法');

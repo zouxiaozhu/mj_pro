@@ -60,6 +60,7 @@ class CreateMembersTable extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->engine = 'Innodb';
             $table->increments('id');
+            $table->string('name')->comment('')->default();
             $table->decimal('origin_price', 8, 2)->comment('')->default(0);
             $table->integer('discount')->comment('')->default(0);
             $table->decimal('price', 8, 2)->comment('')->default(0);
@@ -86,16 +87,17 @@ class CreateMembersTable extends Migration
     {
         Schema::create('member_order', function (Blueprint $table) {
             $table->engine = 'Innodb';
-            $table->uuid('id');
+            $table->increments('id');
             $table->decimal('cost_price', 6, 2)->comment('手机')->default(0);
             $table->integer('counts')->comment('次数')->default(0);
             $table->integer('member_id')->comment('用户')->default(0)->index();
             $table->integer('package_id')->comment('')->default(0);
             $table->tinyInteger('is_deleted')->comment('状态，0禁用，1活跃')->default(0);
             $table->tinyInteger('type')->comment('状态，1 美甲，2 纹眉')->default(0);
-            $table->tinyInteger('cost_type')->comment('状态，1 充值，2 消费')->default(1);
+            $table->string('cost_type')->comment('状态，1 充值，2 消费')->default(1);
             $table->string('comment')->comment('消费备注')->default('');
             $table->integer('operate_user_id')->comment('管理员')->default(0);
+            $table->integer('is_read')->comment()->default(0);
             $table->timestamps();
         });
     }
