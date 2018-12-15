@@ -55,7 +55,7 @@ class OrderController extends BaseController
                     'amount' => $package_info['price'],
                     'member_id' => $insert['member_id'],
                     'package_id' => $insert['package_id'],
-                    'car_no' => $insert['member_id'] . '-' . $insert['package_id'] . md5($insert['member_id'] . '-' . $insert['package_id'])
+                    'card_no' => $insert['member_id'] . '-' . $insert['package_id'] . md5($insert['member_id'] . '-' . $insert['package_id'])
                 ];
                 MemberPackage::create($memberPkgIns);
             } else {
