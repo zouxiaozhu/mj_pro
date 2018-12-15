@@ -204,7 +204,7 @@ class RolesTableSeeder extends Seeder
                 'key' => '消费订单',
                 'depth' => 2,
                 'nav_fid' => 1,
-                'url' => '/api/service/consume`````-order'
+                'url' => '/api/service/consume-order'
             ]
 
         ];

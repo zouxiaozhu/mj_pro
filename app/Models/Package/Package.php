@@ -13,4 +13,9 @@ use Illuminate\Database\Eloquent\Model;
 class Package extends Model{
     protected $table = 'packages';
     protected $guarded = [];
+
+    public function scopeMemberPkg()
+    {
+        return $this->hasMany(MemberPackage::class, 'package_id', 'id');
+    }
 }

@@ -29,6 +29,7 @@ class AuthRoutes
                         $api->get('package', 'ViewsController@packageList');
                         $api->get('add-package/{id?}', 'ViewsController@package');
                         $api->get('order-list', 'ViewsController@orderList');
+                        $api->get('consume-order', 'ViewsController@consumeOrder');
                     });
                 });
             });
@@ -61,11 +62,11 @@ class AuthRoutes
                             $api->get('list', 'MemberController@memberList' );  // 用户登录的基本信息
                             $api->get('delete', 'MemberController@delMember' );  // 用户登录的基本信息
                             $api->any('search', 'MemberController@searchUser' );  // 用户登录的基本信息
+                            $api->any('has-order', 'MemberController@hasOrder' );  // 用户登录的基本信息
                         });
                     });
                 });
             });
-
 
             // package
             $api = app('Dingo\Api\Routing\Router');
@@ -94,6 +95,7 @@ class AuthRoutes
                             $api->post('add', 'OrderController@rechargeOrder');
                             $api->get('list', 'OrderController@orderList');
                             $api->get('count', 'OrderController@count');
+                            $api->post('consumer', 'OrderController@consume');
                         });
                     });
                 });

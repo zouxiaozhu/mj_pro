@@ -12,11 +12,14 @@ namespace App\Http\Controllers\Api\Internal\Member;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\Member\Member;
+use App\Models\Package\MemberPackage;
+use App\Models\Package\Package;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Stripe\Collection;
 
 class MemberController extends BaseController
 {
@@ -35,52 +38,52 @@ class MemberController extends BaseController
             'tel.required' => 'tel params error'
         ];
 
-        $validator = Validator::make( $params, $fill_able, $message );
+        $validator = Validator::make($params, $fill_able, $message);
 
         if ($validator->fails()) {
-            return Response::error( [], $validator->errors()->first() );
+            return Response::error([], $validator->errors()->first());
         }
         $referee_user_id = $params['refer_user_id'];
         $member_id = $params['member_id'];
         $other = [
-            'referee_id' => intval( $referee_user_id ),
-            'password' => isset( $params['password'] ) AND $params['password'] ? Hash::make( $params['password'] ) : '',
+            'referee_id' => intval($referee_user_id),
+            'password' => isset($params['password']) AND $params['password'] ? Hash::make($params['password']) : '',
             'operate_user_id' => auth()->user()->id
         ];
 
         $update = [
-            'member_name' => trim( $params['member_name'] ),
-            'enabled' => intval( $params['enabled'] ),
-            'email' => trim( $params['email'] ),
-            'tel' => intval( $params['tel'] ),
+            'member_name' => trim($params['member_name']),
+            'enabled' => intval($params['enabled']),
+            'email' => trim($params['email']),
+            'tel' => intval($params['tel']),
             'address' => strval($params['address'])
         ];
 
-        $common_tel = Member::where( 'tel', strval( intval( $params['tel'] ) ) )
+        $common_tel = Member::where('tel', strval(intval($params['tel'])))
             ->where('enabled', 1)
             ->get()->toArray();
 
         $tels = array_column($common_tel, 'id');
 
         if (!$member_id) {
-            $add = array_merge( $update, $other );
+            $add = array_merge($update, $other);
 
             if ($tels) {
-                return Response::error( [], '手机号码重复' );
+                return Response::error([], '手机号码重复');
             }
 
-            $r_add = Member::create( $add );
+            $r_add = Member::create($add);
             if (!$r_add) {
-                return Response::error( [], '新增会员失败' );
+                return Response::error([], '新增会员失败');
             }
-            return Response::success( [], '新增会员成功' );
+            return Response::success([], '新增会员成功');
         }
 
         $up = Member::where('id', $member_id)->update($update);
         if (!$up) {
-            return Response::error( [], '更新会员失败' );
+            return Response::error([], '更新会员失败');
         }
-        return Response::success( [], '更新会员成功' );
+        return Response::success([], '更新会员成功');
     }
 
     public function delMember(Request $request)
@@ -107,11 +110,18 @@ class MemberController extends BaseController
         $userInfo = Member::where('tel', $request->get('user_prop'))
             ->orWhere('member_name', $request->get('user_prop'))
             ->with('package')
-            ->first();
+            ->get();
 
-        if (!$userInfo) {
-            return $this->error([], '没有用户信息, 请核实');
+
+        if ($userInfo->count() == 0) {
+            return $this->error([], '没有用户信息1, 请核实');
         }
+
+        if ($userInfo->count() > 1) {
+            return $this->error([], '没有用户信息2, 请核实');
+        }
+        $userInfo = $userInfo->first()->toArray();
+        $userInfo['counts'] = array_sum(array_column($userInfo['package'], 'counts'));
 
         return $this->success($userInfo, '成功');
     }
@@ -124,9 +134,9 @@ class MemberController extends BaseController
             'all_pages' => 1,
             'cur_page' => 1
         ];
-        $page =  $request->get('page') ? : 1;
-        $page_size = abs($request->get('page_size') ? : env('PAGE_SIZE'));
-        $offset = abs($page - 1) * $page_size ;
+        $page = $request->get('page') ?: 1;
+        $page_size = abs($request->get('page_size') ?: env('PAGE_SIZE'));
+        $offset = abs($page - 1) * $page_size;
         $member_list = Member::where('is_deleted', 0)
             ->take(abs(intval($page_size)))
             ->skip($offset)
@@ -147,11 +157,38 @@ class MemberController extends BaseController
         $return = [
             'member_list' => $member_list,
             'operate_users_info' => $operate_users_info,
-            'all_pages' => strval(ceil($member_counts/$page_size)),
+            'all_pages' => strval(ceil($member_counts / $page_size)),
             'cur_page' => $page
         ];
 
         return Response::success($return, '会员信息获取成功');
     }
-    
+
+    public function hasOrder(Request $request, Package $package)
+    {
+        $userInfo = Member::where('tel', $request->get('user_prop'))
+            ->orWhere('member_name', $request->get('user_prop'))
+            ->with('package')
+            ->get();
+
+        if ($userInfo->count() == 0) {
+            return $this->error([], '没有用户信息1, 请核实');
+        }
+
+        if ($userInfo->count() > 1) {
+            return $this->error([], '没有用户信息2, 请核实');
+        }
+        $member = $userInfo->first();
+
+        $memberPackage = MemberPackage::where('member_package.member_id', $member['id'])
+            ->select(["kg.*", 'member_package.counts as m_counts', 'member_package.*'])
+            ->leftJoin('packages as kg', 'kg.id', '=', 'member_package.package_id')
+            ->get()->groupBy('business_type')->toArray();
+        /**
+         * @var Collection $memberPackage
+         */
+        $return['user_info'] = $member;
+        $return['member_pkg'] = $memberPackage;
+        return $this->success($return);
+    }
 }

@@ -83,7 +83,7 @@
                                             <tbody>
                                             <tr v-for="package in current_packages">
                                                 <td><input type="radio" :value="package.id" v-model="package_id"
-                                                            name="packages"></td>
+                                                           name="packages"></td>
                                                 <td>@{{package.id}}</td>
                                                 <td>@{{package.origin_price}}</td>
                                                 <td>@{{package.price}}</td>
@@ -97,6 +97,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-12">备注</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="comment" v-model="comment" class="form-control"
+                                           placeholder="订单备注"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                            </div>
+
                             <div class="form-group">
                                 <button type="button" @click="submitOrder" class="btn btn-bg btn-info col-xs-offset-5">
                                     提交
@@ -127,7 +138,8 @@
             package_id: 0,
             package_list: [],
             counts: 0,
-            discount: 0
+            discount: 0,
+            comment: ''
         },
         methods: {
             submitOrder: function () {
@@ -144,6 +156,7 @@
                     var adddata = {
                         'member_id': me.member_id,
                         'package_id': me.package_id,
+                        'comment': me.comment
                     }
                     me.$http.post(me.submit_order_url, adddata, {emulateJSON: true})
                         .then(function (data) {
@@ -193,14 +206,14 @@
                             this.user_prop = '';
                             return false;
                         } else {
-                            count = data.body.data.package ? data.body.data.package.counts : 0
-                            amount = data.body.data.package ? data.body.data.package.amount : 0
+                            count = data.body.data.package ? data.body.data.counts : 0
+                            // amount = data.body.data.package ? data.body.data.package.amount : 0
                             layer.alert(
                                 '用户姓名 : ' + data.body.data.member_name + "<br/>" +
                                 "手机号码 : " + data.body.data.tel + "<br/>" +
                                 "注册时间 : " + data.body.data.created_at + "<br/>" +
-                                "套餐次数 : " + count + "<br/>" +
-                                "账户余额 : " + amount + "<br/>"
+                                "套餐次数 : " + count + "<br/>"
+                                // "账户余额 : " + amount + "<br/>"
                             )
                             this.member_id = data.body.data.id
                             this.tel = data.body.data.tel

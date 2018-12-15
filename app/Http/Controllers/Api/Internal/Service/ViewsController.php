@@ -59,4 +59,9 @@ class ViewsController  extends Controller
         return view('admin/order/list', []);
     }
 
+    public function consumeOrder()
+    {
+        return view('admin/order/consume', []);
+
+    }
 }

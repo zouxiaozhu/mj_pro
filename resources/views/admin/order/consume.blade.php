@@ -20,7 +20,7 @@
             </div>
         </div>
         <!-- /. ROW  -->
-        <div class="row" id="order-add">
+        <div class="row" id="order-consume">
             <div class="col-md-12 col-sm-12 col-xs-12   ">
                 <div class="panel panel-info">
                     <div class="panel-heading">
@@ -56,7 +56,8 @@
                                 <div class="radio" style="display: inline-block;margin-left: 1rem">
                                         <span v-for="item in business_info">
                                             <label style="margin-left: 2rem">
-                                                <input type="radio" name="business_type" :value="item.business_type" v-model="current_type"
+                                                <input type="radio" name="business_type" :value="item.business_type"
+                                                       v-model="current_type"
                                                        v-on:click="changeCurrent(item.business_type)">
                                                 @{{item.msg}}
                                             </label>
@@ -70,25 +71,16 @@
                                             <thead>
                                             <tr>
                                                 <th>选择</th>
-                                                <th>编号</th>
-                                                <th>原价</th>
-                                                <th>现价</th>
-                                                <th>折扣</th>
-                                                <th>次数</th>
-                                                <th>管理员</th>
-                                                <th>状态</th>
+                                                <th>会员卡号</th>
+                                                <th>剩余次数</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr v-for="package in current_packages">
-                                                <td><input type="radio" value="package.id" name="packages"></td>
-                                                <td>@{{package.id}}</td>
-                                                <td>@{{package.origin_price}}</td>
-                                                <td>@{{package.price}}</td>
-                                                <td>@{{package.discount}}</td>
-                                                <td>@{{package.counts}}</td>
-                                                <td>@{{package.operate_user_id}}</td>
-                                                <td>@{{package.enabled}}</td>
+                                                <td><input type="radio" :value="package.card_no" v-model="card_no"
+                                                           name="packages"></td>
+                                                <td>@{{package.card_no}}</td>
+                                                <td>@{{package.m_counts}}</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -96,7 +88,20 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button type="button" @click="" class="btn btn-bg btn-info col-xs-offset-5">提交 </button>
+                                <label class="col-sm-12">备注</label>
+                                <div class="col-sm-12">
+                                    <input type="text" id="comment" v-model="comment" class="form-control"
+                                           placeholder="订单备注"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="button" @click="submitOrder" class="btn btn-bg btn-info col-xs-offset-5">
+                                    提交
+                                </button>
 
                             </div>
                         </form>
@@ -108,14 +113,14 @@
 </div>
 <script>
     var orderVue = new Vue({
-        el: "#order-add",
+        el: "#order-consume",
         data: {
             member_id: 0,
             user_prop: '',
-            search_user_url: '/api/member/search',
+            search_user_url: '/api/member/has-order',
             business_url: '/api/package/business',
             package_url: '/api/package/list',
-            submit_order_url: '/api/order/add',
+            consume_order_url: '/api/order/consumer',
             tel: '',
             business_info: [],
             current_type: 0,
@@ -123,7 +128,9 @@
             package_id: 0,
             package_list: [],
             counts: 0,
-            discount: 0
+            discount: 0,
+            comment: '',
+            card_no:0
         },
         methods: {
             submitOrder: function () {
@@ -131,14 +138,34 @@
                     layer.alert("先选择用户");
                     return false;
                 }
-
+                if (!this.card_no) {
+                    layer.alert("请选择扣除的会员套餐");
+                    return false;
+                }
+                let me = this
                 layer.confirm("确定提交吗？", function () {
+                    var adddata = {
+                        'member_id': me.member_id,
+                        'card_no': me.card_no,
+                        'comment': me.comment
+                    }
+                    me.$http.post(me.consume_order_url, adddata, {emulateJSON: true})
+                        .then(function (data) {
+                            if (data.body.status) {
+                                layer.alert(data.body.msg)
+                                return false;
+                            } else {
+                                layer.alert("添加失败，请重试")
+                                return false;
+                            }
 
+                        }, function (response) {
+                        })
                 });
             },
-            changeCurrent:function(current_type){
-                this.current_packages = this.business_info[current_type].packages;
-                console.log(current_type)
+            changeCurrent: function (current_type) {
+                this.current_packages = this.package_list[current_type];
+                this.card_no = 0;
             },
             businessInfo: function () {
                 let me = this
@@ -146,23 +173,14 @@
                     .then(function (data) {
                         me.business_info = data.body.data
                         if (me.current_type == 0) {
-                            me.current_type = me.business_info[0].business_type;
-                            me.current_packages = me.business_info[me.current_type].packages;
+                            me.current_type = me.business_info[1].business_type;
+                            me.current_packages = me.package_list[me.current_type];
                         } else {
-                            me.current_packages = me.business_info[me.current_type].packages;
+                            me.current_packages = me.package_list[me.current_type];
                         }
                     }, function (response) {
                     })
             },
-            packageList: function () {
-                let me = this
-                this.$http.get(this.package_url)
-                    .then(function (data) {
-                        me.package_list = data.body.data
-                    }, function (response) {
-                    })
-            }
-            ,
             searchUser: function () {
                 this.$http.post(this.search_user_url, {user_prop: this.user_prop,}, {emulateJSON: true})
                     .then(function (data) {
@@ -171,17 +189,20 @@
                             this.user_prop = '';
                             return false;
                         } else {
+                            // count = data.body.data.package ? data.body.data.package.counts : 0
+                            // amount = data.body.data.package ? data.body.data.package.amount : 0
                             layer.alert(
-                                '用户姓名 : ' + data.body.data.member_name + "<br/>" +
-                                "手机号码 : " + data.body.data.tel + "<br/>" +
-                                "注册时间 : " + data.body.data.created_at + "<br/>" +
-                                "套餐次数 : " + data.body.data.package.counts + "<br/>" +
-                                "账户余额 : " + data.body.data.package.amount + "<br/>"
+                                '用户姓名 : ' + data.body.data.user_info.member_name + "<br/>" +
+                                "手机号码 : " + data.body.data.user_info.tel + "<br/>" +
+                                "注册时间 : " + data.body.data.user_info.created_at + "<br/>"
+                                // "套餐次数 : " + count + "<br/>" +
+                                // "账户余额 : " + amount + "<br/>"
                             )
-                            this.member_id = data.body.data.id
-                            this.tel = data.body.data.tel
-                            this.package_list = data.body.data.packages
-
+                            this.member_id = data.body.data.user_info.id
+                            this.tel =  data.body.data.user_info.tel
+                            this.package_list = data.body.data.member_pkg
+                            this.businessInfo()
+                            return false;
                         }
                     }, function (response) {
                     }).then(function () {
@@ -190,9 +211,6 @@
             }
         },
         created: function () {
-            this.businessInfo()
-            this.packageList()
-
         }
     })
 
