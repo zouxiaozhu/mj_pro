@@ -41,7 +41,7 @@ class AuthRoutes
             $api->group(['namespace' => 'App\Http\Controllers\Api\Internal'], function ($api) {
                 $api->group(['namespace' => 'Auth'], function ($api) {
                     $api->group(['prefix' => 'auth'], function ($api) {
-                        $api->post('/api/package/package', 'AuthController@login');  // 用户登录的基本信息
+                        $api->post('login', 'AuthController@login');  // 用户登录的基本信息
                         $api->get('logout', ['middleware' => 'admin.auth', 'uses' => 'AuthController@logout']); // 用户退出
                         $api->post('create', 'AuthController@create');
                         $api->put('update', 'AuthController@update');
