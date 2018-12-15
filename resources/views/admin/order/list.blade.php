@@ -117,7 +117,7 @@
                                     <tr class="{{($style)[0]}}" v-for="order in order_list">
                                             <td>@{{ order.id }}</td>
                                             <td>@{{ order.member.member_name }}</td>
-                                            <td>@{{ order.member.cost_type  == 1 ? '充值' : '消费' }}</td>
+                                            <td>@{{ order.cost_type  == 1 ? '充值' : '消费' }}</td>
                                             <td>@{{ order.package.name}}</td>
                                             <td>@{{ order.package.business_type }}</td>
                                             <td>@{{ order.package.price }}</td>
