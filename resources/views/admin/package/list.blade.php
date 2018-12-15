@@ -90,7 +90,7 @@
                                     <?php $style = ['info', 'warning', ];shuffle($style);?>
                                         <tr class="{{($style)[0]}}" v-for="package in package_list">
                                             <td >@{{ package.id }}</td>
-                                            <td>@{{ package.business_type }}</td>
+                                            <td>@{{ package.business_content }}</td>
                                             <td>@{{ package.origin_price }}</td>
                                             <td>@{{ package.price }}</td>
                                             <td>@{{ package.discount }}</td>
